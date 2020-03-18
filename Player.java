@@ -17,7 +17,7 @@ public class Player
     // instance variables - replace the example below with your own
     private int itemLimit;
     private int itemsHeld;
-    private int currentRoom;
+    private Room currentRoom;
     private HashSet<Items> Inventory;
     private boolean haveBackpack;
 
@@ -26,12 +26,41 @@ public class Player
      */
     public Player()
     {
-        currentRoom = 1; //Starting Room Number 1
+       // currentRoom = 1; //Starting Room Number 1
         itemsHeld = 0; //Start with no items being held
         itemLimit = 2; // can only hold 2 items until a backpack
         haveBackpack = false; //no backpack at stat
     }
-
+    //Backpack Functionality:
+    /**
+     * Reflect player picking up backpack
+     * haveBackpack = true
+     */
+    public void getBackpack()
+    {
+        itemLimit = 4;
+        haveBackpack = true;
+    }   
+    /**
+     * Reflect player dropping up backpack
+     * haveBackpack = true
+     */
+    public void dropBackpack()
+    {
+        itemLimit = 2;
+        haveBackpack = false;
+    }
+    /**
+     * is Player wearing backpack?
+     * @return haveBackPack 
+     */
+    public boolean haveBackpack()
+    {
+        return haveBackpack;
+    }
+    
+    
+    
     /**
      * An example of a method - replace this comment with your own
      *
