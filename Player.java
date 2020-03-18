@@ -28,7 +28,7 @@ public class Player
     {
        // currentRoom = 1; //Starting Room Number 1
         itemsHeld = 0; //Start with no items being held
-        itemLimit = 2; // can only hold 2 items until a backpack
+        itemLimit = 1; // can only hold 2 items until a backpack
         haveBackpack = false; //no backpack at stat
     }
     //Backpack Functionality:
@@ -38,7 +38,7 @@ public class Player
      */
     public void getBackpack()
     {
-        itemLimit = 4;
+        itemLimit = 3;
         haveBackpack = true;
     }   
     /**
@@ -47,7 +47,7 @@ public class Player
      */
     public void dropBackpack()
     {
-        itemLimit = 2;
+        itemLimit = 1;
         haveBackpack = false;
     }
     /**

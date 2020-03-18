@@ -107,16 +107,26 @@ public class Room
     {
         roomItems.remove(item);
     }
-    
+
     /**
-     * lists all Items in the room.
-     * @param direction The exit's direction.
-     * @return The room in the given direction.
+     * Return a string describing the room's items, for example
+     * "Items in room: lamp, rock".
+     * @return Lists room's items or "There are no items in this room".
      */
-    public void listItems()
+    private String getItemsString()
     {
-            for(Items item : roomItems){
-            item.getName();
+        String returnString ="";
+        if(roomItems.isEmpty()){
+            returnString = "There are no items in this room";
+        } else {
+            returnString = "Items in room:";
+            String temp = "";
+            for(Items item : roomItems) {
+                temp += ", " + item.getName() ; 
             }
+            returnString += temp.substring(1);
+        }
+        return returnString;
     }
+    
 }
