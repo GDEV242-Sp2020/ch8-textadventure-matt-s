@@ -18,20 +18,25 @@
 public class Game 
 {
     private Parser parser;
-    private Room currentRoom;
+    private Player player;
+    
         
     /**
      * Create the game and initialise its internal map.
      */
     public Game() 
     {
+        
         createRooms();
+        
         createItems();
         parser = new Parser();
+        
     }
 
     /**
-     * Create all the rooms and link their exits together.
+     * Create all the rooms and link their exits together and
+     * then create and place a player in a room.
      */
     private void createRooms()
     {
@@ -57,12 +62,20 @@ public class Game
         lab.setExit("east", office);
 
         office.setExit("west", lab);
-
-        currentRoom = outside;  // start game outside
+        player = new Player(outside);
     }
     
+    /**
+     * Create all the items and place them in their starting rooms.
+     */
     private void createItems()
     {
+        Items flashlight, rock, map, backpack;
+        
+        flashlight = new Items("FlashLight");
+        rock = new Items("Rock");
+        map = new Items("Map");
+        backpack = new Items("BackPack");
     }
     
     /**
@@ -93,7 +106,7 @@ public class Game
         System.out.println("World of Zuul is a new, incredibly boring adventure game.");
         System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
         System.out.println();
-        System.out.println(currentRoom.getLongDescription());
+        System.out.println(player.getCurrentRoom().getLongDescription());
     }
 
     /**
@@ -158,14 +171,14 @@ public class Game
         String direction = command.getSecondWord();
 
         // Try to leave current room.
-        Room nextRoom = currentRoom.getExit(direction);
+        Room nextRoom = player.getCurrentRoom().getExit(direction);
 
         if (nextRoom == null) {
             System.out.println("There is no door!");
         }
         else {
-            currentRoom = nextRoom;
-            System.out.println(currentRoom.getLongDescription());
+            player.setCurrentRoom(nextRoom);
+            System.out.println(player.getCurrentRoom().getLongDescription());
         }
     }
 
