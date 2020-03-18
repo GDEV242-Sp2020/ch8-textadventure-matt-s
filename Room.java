@@ -1,4 +1,5 @@
 import java.util.Set;
+import java.util.HashSet;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -20,7 +21,7 @@ public class Room
 {
     private String description;
     private HashMap<String, Room> exits;        // stores exits of this room.
-    private Set<Items> roomItems;   //stores the items in this room
+    private HashSet<Items> roomItems;   //stores the items in this room
     
     /**
      * Create a room described "description". Initially, it has
@@ -32,6 +33,8 @@ public class Room
     {
         this.description = description;
         exits = new HashMap<>();
+        roomItems = new HashSet<Items>();
+        
     }
 
     /**
@@ -88,6 +91,18 @@ public class Room
     public Room getExit(String direction) 
     {
         return exits.get(direction);
+    }
+    
+    //Item Functionality *********************
+    
+    /**
+     * Check to see if this roomItems has item
+     * @param  item     an Items object
+     */
+    public boolean haveItem(Items item)
+    {
+        boolean haveItem = roomItems.contains(item);
+        return haveItem;
     }
     
     /**
