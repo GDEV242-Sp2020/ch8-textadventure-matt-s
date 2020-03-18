@@ -30,6 +30,16 @@ public class Items
     }
     
     /**
+     * gets name String for item.
+     * @return name of item.
+     */    
+    public String getName()
+    {
+        return name;
+    }
+    
+    
+    /**
      * gets description String for item.
      * @return description of item.
      */    
