@@ -26,6 +26,7 @@ public class Game
     public Game() 
     {
         createRooms();
+        createItems();
         parser = new Parser();
     }
 
@@ -59,7 +60,11 @@ public class Game
 
         currentRoom = outside;  // start game outside
     }
-
+    
+    private void createItems()
+    {
+    }
+    
     /**
      *  Main play routine.  Loops until end of play.
      */
