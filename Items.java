@@ -12,8 +12,8 @@ public class Items
     // instance variables - replace the example below with your own
     private String name;
     private String description;
-    private int location; //location by room number
-    boolean isHeld = false; //no objects start with a player
+    private int weight;
+    private boolean isHeld = false; //no objects start with a player
     
 
     /**
@@ -21,11 +21,12 @@ public class Items
      * @param m_name the name of item
      * @param m_location the starting location
      */
-    public Items(String m_name, int m_location)
+    public Items(String name)
     {
-        name = m_name;
-        location = m_location;
-        setDescription(); 
+        this.name = name;
+        weight = 1;
+        
+       // setDescription();  figure how to use enums for this.
         
     }
     
@@ -54,26 +55,36 @@ public class Items
      *this method updates the description from initial null status and must 
      *be used at object initialization to prevent null return.
      */    
-    private void setDescription()
+    private void setDescription(String description)
     {
-        description = null;
+        this.description = description;
+    }
+    
+    
+    //Holding functionality : *********************
+    /**
+     * Check to see if Item is being held
+     */
+    public boolean isHeld()
+    {
+        return isHeld;
     }
     
     /**
-     * gets description String for item.
-     * @return description of item.
+     * Mark variable as being held in player's Inventory
      */    
-    private int getLocation()
+    public void setBeingHeld()
     {
-        return location;
-    }
-    
-    /**
-     * Sets the location of the item by checking room's location
-     */    
-    private void setLocation()
-    {
+        isHeld = true;   
     }    
+    
+    /**
+     * Mark variable as being on the floor in a room
+     */
+    public void setNotHeld()
+    {
+        isHeld = false;
+    }
     
     /**
      * An example of a method - replace this comment with your own
