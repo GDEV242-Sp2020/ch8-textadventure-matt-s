@@ -19,7 +19,7 @@ public class Game
 {
     private Parser parser;
     private Room currentRoom;
-        
+    private Room previousRoom;    
     /**
      * Create the game and initialise its internal map.
      */
@@ -39,33 +39,36 @@ public class Game
         Room stairwell2,stairwell3,occupiedRoom,lobby,hallway3,hallway4;
         Room elevator1,elevator2, room1,room3,room4;
         // create the rooms
-        outside = new Room("outside the main entrance of the Hotel");
-        lobby= new Room("first room of hotel from the main entrance");
-        staffRoom = new Room("room at one end of the lobby reserved for staff");
-        kitchen = new Room("located behind the restaurant with back door exit");
+        outside = new Room(" outside the main entrance of the Hotel.");
+        lobby= new Room("currently in the" +  
+                        "first room of hotel from the main entrance.");
+        staffRoom = new Room("in the staff room. look carefully for"+
+                    "the hiden back pack.It could be helpful!");
+        kitchen = new Room("in the kitchen behind the restaurant with"+ 
+        "there only one exits to the restaurant.");
     
-        hallway1 = new Room("hallway 1 on the first floor");
-        hallway2= new Room("hallway 2 on the first floor");
-        hallway3 = new Room("hallway 1 on the second floor");
-        hallway4= new Room("hallway 2 on the second floor");
+        hallway1 = new Room(" in the hallway on the rigth on the first floor");
+        hallway2= new Room("in the main hallway of the first floor.");
+        hallway3 = new Room("in the hallway on the rigth on the second floor.");
+        hallway4= new Room(" in the main hallway of the second floor.");
         
-        stairwell = new Room("to the first floor");
-        stairwell2 = new Room("the first to second");
-        stairwell3 = new Room("leads to the roof");
-        roof = new Room("third floor above the second floor");
+        stairwell = new Room("now  on the stairweel that leads to the first floor");
+        stairwell2 = new Room("now on the stairweel that leads to the second floor");
+        stairwell3 = new Room("nowon the stairweel that leads to the roof");
+        roof = new Room("you're on the roof of the hotel.");
         
-        parking1 = new Room("first floor parking");
-        parking2 = new Room("Second floor parking");
+        parking1 = new Room("on first floor parking");
+        parking2 = new Room("on second floor parking");
        
-        swimmingPool = new Room("room on the second floor");
-        elevator1 = new Room("elevator from restaurant to hallway1");
-        elevator2 = new Room("hallway1 to hallway3");
-        restaurant = new Room("room at the left of the lobby with two exits");
+        swimmingPool = new Room("in the room on the second floor that holds the swimmingpool");
+        elevator1 = new Room("in the elevator that goes from restaurant to hallway1");
+        elevator2 = new Room("in the other elevator that goes from hallway1 to hallway3");
+        restaurant = new Room(" in the hotel restaurant.");
         
-        occupiedRoom = new Room("second floor room occupied");
-        room1 = new Room("first room on the first floor");
-        room3 = new Room("second floor room next to stairwell1");
-        room4 = new Room("second floor room next to hallway3");
+        occupiedRoom = new Room("you can't open this door the room is occupied");
+        room1 = new Room("in first empty room on the first floor");
+        room3 = new Room("in second empty room on the  first floor next to stairwell1");
+        room4 = new Room("in first room on the second floor that is next to hallway3");
         // initialise room exits
         
         outside.setExit("east", restaurant);
@@ -107,7 +110,8 @@ public class Game
         room3.setExit("north", hallway2);
         room4.setExit("east", hallway3);
 
-        currentRoom = hallway2;  // start in the hallway2(number 12 in the google docs)
+        currentRoom = hallway2;// start in the hallway2(number 12 in the google docs)
+        previousRoom = hallway2;
     }
 
     /**
@@ -138,7 +142,7 @@ public class Game
         System.out.println("World of Zuul is a new, incredibly boring adventure game.");
         System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
         System.out.println();
-        System.out.println(currentRoom.getLongDescription());
+        System.out.println(currentRoom.printLocationInfo());
     }
 
     /**
@@ -167,6 +171,10 @@ public class Game
                 
             case LOOK:
                 lookAround(command);
+                break;
+                
+            case BACK:
+                backOnce(command);
                 break;
 
             case QUIT:
@@ -214,15 +222,15 @@ public class Game
         }
         else {
             currentRoom = nextRoom;
-            System.out.println(currentRoom.getLongDescription());
+            System.out.println(currentRoom.printLocationInfo());
         }
     }
    
     private void lookAround(Command command) 
     {
-        if(!command.hasSecondWord()) {
+       if(!command.hasSecondWord()) {
             // if there is no second word, we don't know where to go...
-            System.out.println("Go where?");
+            System.out.println("look where?");
             return;
         }
 
@@ -236,9 +244,26 @@ public class Game
         }
         else {
             currentRoom = nextRoom;
-            System.out.println(currentRoom.getLongDescription());
+            System.out.println(currentRoom.printLocationInfo());
         }
     }
+    
+    private void backOnce(Command command) 
+    {
+        String direction = command.getSecondWord();
+        Room nextRoom = currentRoom.getExit(direction);
+
+        if (nextRoom == null) {
+            System.out.println("There is no door!");
+        }
+        else {
+            previousRoom = currentRoom;
+            //currentRoom = nextRoom;
+            nextRoom = previousRoom;
+            System.out.println(currentRoom.printLocationInfo());
+        }
+    }
+    
 
     /** 
      * "Quit" was entered. Check the rest of the command to see

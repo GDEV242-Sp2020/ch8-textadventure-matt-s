@@ -58,7 +58,18 @@ public class Room
      *     Exits: north west
      * @return A long description of this room
      */
-    public String getLongDescription()
+    public String printLocationInfo()
+    {
+        return "You are " + description + ".\n" + getExitString();
+    }
+    
+    /**
+     * Return a description of the room in the form:
+     *     You are in the kitchen.
+     *     Exits: north west
+     * @return A long description of this room
+     */
+    public String leaveRoom()
     {
         return "You are " + description + ".\n" + getExitString();
     }
