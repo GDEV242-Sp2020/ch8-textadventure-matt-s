@@ -114,10 +114,7 @@ public class Game
         room3.setExit("north", hallway2);
         room4.setExit("east", hallway3);
 
-        currentRoom = hallway2;  // start in the hallway2(number 12 in the google docs)
-
-        office.setExit("west", lab);
-        player = new Player(outside);
+        player = new Player(hallway2);  // start in the hallway2(number 12 in the google docs)
 
     }
     
@@ -242,28 +239,19 @@ public class Game
         }
     }
    
+    
+    /**
+     * Player looks around and describes room.
+     * Prints long description of current room
+     * 
+     * @param command given from player
+     */
     private void lookAround(Command command) 
     {
-        if(!command.hasSecondWord()) {
-            // if there is no second word, we don't know where to go...
-            System.out.println("Go where?");
-            return;
-        }
-
-        String direction = command.getSecondWord();
-
-        // Try to leave current room.
-        Room nextRoom = currentRoom.getExit(direction);
-
-        if (nextRoom == null) {
-            System.out.println("There is no door!");
-        }
-        else {
-            currentRoom = nextRoom;
-            System.out.println(currentRoom.getLongDescription());
-        }
+        System.out.println(player.getCurrentRoom().getLongDescription());
     }
 
+    
     /** 
      * "Quit" was entered. Check the rest of the command to see
      * whether we really quit the game.
