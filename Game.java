@@ -239,8 +239,10 @@ public class Game
                 // goRoom(command);
                 // break;
                 
+
 /**
-========================================
+ * 
+ 
  this switch goes into Actions Class
             case LOOK:
                 look(command);
@@ -279,7 +281,7 @@ public class Game
      // * Print out some help information.
      // * Here we print some stupid, cryptic message and a list of the 
      // * command words.
-     // */
+     // 
     // private void printHelp() 
     // {
         // message.printHelp();
@@ -290,7 +292,7 @@ public class Game
     // /** 
      // * Try to go in one direction. If there is an exit, enter the new
      // * room, otherwise print an error message.
-     // */
+     // *
     // private void goRoom(Command command) 
     // {
         // if(!command.hasSecondWord()) {
@@ -396,7 +398,7 @@ public class Game
     
  
     
-*/
+
         // // Try to leave current room.
         // Room nextRoom = player.getCurrentRoom().getExit(direction);
 
@@ -415,7 +417,7 @@ public class Game
      // * Prints long description of current room
      // * 
      // * @param command given from player
-     // */
+     // *
     // private void lookAround(Command command) 
     // {
         // System.out.println(player.getCurrentRoom().getLongDescription());
@@ -426,7 +428,7 @@ public class Game
      // * "Quit" was entered. Check the rest of the command to see
      // * whether we really quit the game.
      // * @return true, if this command quits the game, false otherwise.
-     // */
+     // *
     // private boolean quit(Command command) 
     // {
         // if(command.hasSecondWord()) {
@@ -437,4 +439,5 @@ public class Game
             // return true;  // signal that we want to quit
         // }
     // }
+    **/
 }

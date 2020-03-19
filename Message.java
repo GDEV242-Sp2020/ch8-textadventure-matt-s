@@ -100,7 +100,7 @@ public class Message
         System.out.println("see if anyone truly is after you.");
         System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
         System.out.println();
-        System.out.println(Game.player().getCurrentRoom().getLongDescription());
+        System.out.println(Game.player().getCurrentRoom().printLocationInfo());
     }
     
     /**
