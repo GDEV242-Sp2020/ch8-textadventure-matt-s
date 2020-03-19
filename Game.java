@@ -1,3 +1,4 @@
+import java.util.HashSet;
 /**
  *  This class is the main class of the "World of Zuul" application. 
  *  "World of Zuul" is a very simple, text based adventure game.  Users 
@@ -18,22 +19,33 @@
 public class Game 
 {
     private Parser parser;
-    private Player player;
-    
+    public static Player player; // public so other classes can react on Player through Game
+    private Message message;
+    private Room startLocation; //allows player to be created in constructor
+    public HashSet<Items> GameItems;
         
     /**
      * Create the game and initialise its internal map.
      */
     public Game() 
     {
-        
+        GameItems = new HashSet<Items>();
         createRooms();
-        
         createItems();
+        player = new Player(startLocation);  // start in the hallway2(number 12 in the google docs)
         parser = new Parser();
+        message = new Message();
         
     }
-
+    
+    /**
+     * This method allows Game's Player object to be accessed elsewhere in package
+     */
+    static public Player player()
+    {
+    return player;
+    }
+    
     /**
      * Create all the rooms and link their exits together and
      * then create and place a player in a room.
@@ -44,6 +56,7 @@ public class Game
         Room stairwell, parking1,parking2,roof,swimmingPool,elevator,restaurant;
         Room stairwell2,stairwell3,occupiedRoom,lobby,hallway3,hallway4;
         Room elevator1,elevator2, room1,room3,room4;
+        
         // create the rooms
         outside = new Room("outside the main entrance of the Hotel");
         lobby= new Room("first room of hotel from the main entrance");
@@ -114,21 +127,30 @@ public class Game
         room3.setExit("north", hallway2);
         room4.setExit("east", hallway3);
 
-        player = new Player(hallway2);  // start in the hallway2(number 12 in the google docs)
+        startLocation = hallway2;
 
     }
     
     /**
      * Create all the items and place them in their starting rooms.
+     * Items methods:
+     * 
      */
     private void createItems()
     {
         Items flashlight, rock, map, backpack;
         
-        flashlight = new Items("FlashLight");
+        flashlight = new Items("Flash Light");
+        GameItems.add(flashlight);
+        
         rock = new Items("Rock");
+        GameItems.add(rock);
+        
         map = new Items("Map");
+        GameItems.add(map);
+        
         backpack = new Items("BackPack");
+        GameItems.add(backpack);
     }
     
     /**
@@ -136,7 +158,7 @@ public class Game
      */
     public void play() 
     {            
-        printWelcome();
+        message.printWelcome();
 
         // Enter the main command loop.  Here we repeatedly read commands and
         // execute them until the game is over.
@@ -149,18 +171,7 @@ public class Game
         System.out.println("Thank you for playing.  Good bye.");
     }
 
-    /**
-     * Print out the opening message for the player.
-     */
-    private void printWelcome()
-    {
-        System.out.println();
-        System.out.println("Welcome to the World of Zuul!");
-        System.out.println("World of Zuul is a new, incredibly boring adventure game.");
-        System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
-        System.out.println();
-        System.out.println(player.getCurrentRoom().getLongDescription());
-    }
+
 
     /**
      * Given a command, process (that is: execute) the command.
