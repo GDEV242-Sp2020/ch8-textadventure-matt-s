@@ -64,7 +64,10 @@ public class Room
      */
     public String getLongDescription()
     {
-        return "You are " + description + ".\n" + getExitString();
+
+        return "You are " + description + ".\n"
+                + getItemsString() +". \n"
+                + getExitString();
     }
 
     /**
@@ -96,7 +99,7 @@ public class Room
     //Item Functionality *********************
     
     /**
-     * Check to see if this roomItems has item
+     * Check to see if this roomItems has specific item
      * @param  item     an Items object
      */
     public boolean haveItem(Items item)
