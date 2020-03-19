@@ -44,7 +44,7 @@ public class Items
      * gets description String for item.
      * @return description of item.
      */    
-    private String getDescription()
+    public String getDescription()
     {
         return description;
     }
@@ -55,7 +55,7 @@ public class Items
      *this method updates the description from initial null status and must 
      *be used at object initialization to prevent null return.
      */    
-    private void setDescription(String description)
+    public void setDescription(String description)
     {
         this.description = description;
     }
