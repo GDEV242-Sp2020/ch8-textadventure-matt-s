@@ -1,25 +1,26 @@
+
+
+
+import java.util.*;
 /**
- *  This class is the main class of the "World of Zuul" application. 
- *  "World of Zuul" is a very simple, text based adventure game.  Users 
- *  can walk around some scenery. That's all. It should really be extended 
- *  to make it more interesting!
- * 
- *  To play this game, create an instance of this class and call the "play"
- *  method.
- * 
+ *  This class is the main class of the hotel escape game. 
+ *  
  *  This main class creates and initialises all the others: it creates all
  *  rooms, creates the parser and starts the game.  It also evaluates and
  *  executes the commands that the parser returns.
  * 
- * @author  Michael Kölling and David J. Barnes
- * @version 2016.02.29
+ * @ Matt Sheehan & Macelle Tamegnon
+ * @ 2020/03/19
  */
 
 public class Game 
+
 {
     private Parser parser;
     private Room currentRoom;
-    private Room previousRoom;    
+    private Room previousRoom; 
+    private Stack<Room> roomStack;
+    
     /**
      * Create the game and initialise its internal map.
      */
@@ -110,7 +111,7 @@ public class Game
         room3.setExit("north", hallway2);
         room4.setExit("east", hallway3);
 
-        currentRoom = hallway2;// start in the hallway2(number 12 in the google docs)
+        currentRoom = room3;// start in the hallway2(number 12 in the google docs)
         previousRoom = hallway2;
     }
 
@@ -120,10 +121,8 @@ public class Game
     public void play() 
     {            
         printWelcome();
-
         // Enter the main command loop.  Here we repeatedly read commands and
         // execute them until the game is over.
-                
         boolean finished = false;
         while (! finished) {
             Command command = parser.getCommand();
@@ -138,7 +137,7 @@ public class Game
     private void printWelcome()
     {
         System.out.println();
-        System.out.println("Welcome to the World of Zuul!");
+        System.out.println("Welcome to Escape the hotel game!");
         System.out.println("World of Zuul is a new, incredibly boring adventure game.");
         System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
         System.out.println();
@@ -170,12 +169,24 @@ public class Game
                 break;
                 
             case LOOK:
-                lookAround(command);
+                look(command);
                 break;
                 
             case BACK:
-                backOnce(command);
+                goBack();
                 break;
+                
+            case MARK: 
+                 setRoom(currentRoom); 
+                 break;
+            /*case BACK:
+                back(command);
+                break;*/
+                
+            case STACKBACK:
+                stackBack(command);
+                break;
+                
 
             case QUIT:
                 wantToQuit = quit(command);
@@ -206,62 +217,92 @@ public class Game
      */
     private void goRoom(Command command) 
     {
-        if(!command.hasSecondWord()) {
-            // if there is no second word, we don't know where to go...
-            System.out.println("Go where?");
-            return;
+     // if there is no second word, we don't know where to go...
+      if(!command.hasSecondWord()){
+         System.out.println("Go where?");
+         return;
         }
 
         String direction = command.getSecondWord();
 
         // Try to leave current room.
         Room nextRoom = currentRoom.getExit(direction);
-
-        if (nextRoom == null) {
+       if (nextRoom == null) {
             System.out.println("There is no door!");
         }
-        else {
-            currentRoom = nextRoom;
-            System.out.println(currentRoom.printLocationInfo());
+        else
+        {
+           previousRoom = currentRoom;
+           currentRoom = nextRoom;
+           System.out.println(currentRoom.printLocationInfo());
         }
-    }
-   
-    private void lookAround(Command command) 
-    {
-       if(!command.hasSecondWord()) {
-            // if there is no second word, we don't know where to go...
-            System.out.println("look where?");
-            return;
-        }
-
-        String direction = command.getSecondWord();
-
-        // Try to leave current room.
-        Room nextRoom = currentRoom.getExit(direction);
-
-        if (nextRoom == null) {
-            System.out.println("There is no door!");
-        }
-        else {
-            currentRoom = nextRoom;
-            System.out.println(currentRoom.printLocationInfo());
-        }
-    }
+     }
     
-    private void backOnce(Command command) 
+     private void look(Command command) 
+     {
+        if (command.hasSecondWord())
+        { 
+        System.out.println("look what?");  
+        return;
+      }
+        System.out.println(currentRoom.printLocationInfo());
+        }
+     
+        private void back(Command command) 
+     {
+      if (command.hasSecondWord())
+        { 
+        System.out.println("Back what?");  
+        return;
+      }
+     
+      if (previousRoom == null) {
+            System.out.println("Sorry, cannot go back!");
+            return;
+        }
+        roomStack.push(currentRoom);
+        Room temp = currentRoom;
+        currentRoom = previousRoom;
+        previousRoom = temp;
+        System.out.println("You gone back to the previous Room.");
+        System.out.println("And now" + currentRoom.printLocationInfo() );
+     }
+     
+     private void stackBack(Command command)
+     {
+         if (command.hasSecondWord())
+        { 
+          System.out.println("sackBack what?");  
+           return;
+        }
+        
+        if (previousRoom == null) {
+            System.out.println("Sorry, cannot go stackback!");
+            return;
+        }
+        previousRoom = currentRoom;
+        roomStack.push(currentRoom);
+        currentRoom = roomStack.pop();
+        System.out.println("You have gone Stack back");
+        System.out.println("And now" + currentRoom.printLocationInfo() );
+     }
+        
+     private void setRoom(Room room) 
     {
-        String direction = command.getSecondWord();
-        Room nextRoom = currentRoom.getExit(direction);
-
-        if (nextRoom == null) {
+        previousRoom = currentRoom;
+        System.out.println("You were went back and now");
+     }
+    
+    private boolean goBack()
+    {
+       if (previousRoom == null) {
             System.out.println("There is no door!");
+            return false;
         }
-        else {
-            previousRoom = currentRoom;
-            //currentRoom = nextRoom;
-            nextRoom = previousRoom;
-            System.out.println(currentRoom.printLocationInfo());
-        }
+       currentRoom =  previousRoom;
+       System.out.println("You went back!");
+       System.out.println("And now" + currentRoom.printLocationInfo() );
+       return true;
     }
     
 
