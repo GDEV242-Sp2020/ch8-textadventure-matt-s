@@ -1,22 +1,29 @@
+
+import java.util.*;
+
 import java.util.HashSet;
+
 /**
- *  This class is the main class of the "World of Zuul" application. 
- *  "World of Zuul" is a very simple, text based adventure game.  Users 
- *  can walk around some scenery. That's all. It should really be extended 
- *  to make it more interesting!
- * 
- *  To play this game, create an instance of this class and call the "play"
- *  method.
- * 
+ *  This class is the main class of the hotel escape game. 
+ *  
  *  This main class creates and initialises all the others: it creates all
  *  rooms, creates the parser and starts the game.  It also evaluates and
  *  executes the commands that the parser returns.
  * 
+ * @ Matt Sheehan & Macelle Tamegnon
+ * @ 2020/03/19
+
  * @author  Matthew Sheehan
  * @version 3/18/2020
+
  */
 public class Game 
+
 {
+
+    private Room currentRoom;
+    private Room previousRoom; 
+    private Stack<Room> roomStack;
     public Parser parser;
     public static Player player; // public so other classes can react on Player through Game
     private Message message;
@@ -28,7 +35,7 @@ public class Game
     Room stairwell, parking1,parking2,roof,swimmingPool,elevator,restaurant;
     Room stairwell2,stairwell3,occupiedRoom,lobby,hallway3,hallway4;
     Room elevator1,elevator2, room1,room3,room4;
-    
+
     /**
      * Create the game and initialise its internal map.
      */
@@ -64,36 +71,38 @@ public class Game
         
         
         // create the rooms
-        outside = new Room("outside the main entrance of the Hotel");
-        lobby= new Room("first room of hotel from the main entrance");
-        staffRoom = new Room("room at one end of the lobby reserved for staff");
-        kitchen = new Room("located behind the restaurant with back door exit");
+        outside = new Room(" outside the main entrance of the Hotel.");
+        lobby= new Room("currently in the" +  
+                        "first room of hotel from the main entrance.");
+        staffRoom = new Room("in the staff room. look carefully for"+
+                    "the hiden back pack.It could be helpful!");
+        kitchen = new Room("in the kitchen behind the restaurant with"+ 
+        "there only one exits to the restaurant.");
     
-        hallway1 = new Room("hallway 1 on the first floor");
-        hallway2= new Room("hallway 2 on the first floor");
-        hallway3 = new Room("hallway 1 on the second floor");
-        hallway4= new Room("hallway 2 on the second floor");
+        hallway1 = new Room(" in the hallway on the rigth on the first floor");
+        hallway2= new Room("in the main hallway of the first floor.");
+        hallway3 = new Room("in the hallway on the rigth on the second floor.");
+        hallway4= new Room(" in the main hallway of the second floor.");
         
-        stairwell = new Room("to the first floor");
-        stairwell2 = new Room("the first to second");
-        stairwell3 = new Room("leads to the roof");
-        roof = new Room("third floor above the second floor");
+        stairwell = new Room("now  on the stairweel that leads to the first floor");
+        stairwell2 = new Room("now on the stairweel that leads to the second floor");
+        stairwell3 = new Room("nowon the stairweel that leads to the roof");
+        roof = new Room("you're on the roof of the hotel.");
         
-        parking1 = new Room("first floor parking");
-        parking2 = new Room("Second floor parking");
+        parking1 = new Room("on first floor parking");
+        parking2 = new Room("on second floor parking");
        
-        swimmingPool = new Room("room on the second floor");
+
+        swimmingPool = new Room("in the room on the second floor that holds the swimmingpool");
+        elevator1 = new Room("in the elevator that goes from restaurant to hallway1");
+        elevator2 = new Room("in the other elevator that goes from hallway1 to hallway3");
+        restaurant = new Room(" in the hotel restaurant.");
         
-        elevator1 = new Room("elevator from restaurant to hallway1");
-        elevator2 = new Room("hallway1 to hallway3");
-        
-        restaurant = new Room("room at the left of the lobby with two exits");
-        
-        occupiedRoom = new Room("second floor room occupied");
-        room1 = new Room("first room on the first floor");
-        room3 = new Room("second floor room next to stairwell1");
-        room4 = new Room("second floor room next to hallway3");
-        
+        occupiedRoom = new Room("you can't open this door the room is occupied");
+        room1 = new Room("in first empty room on the first floor");
+        room3 = new Room("in second empty room on the  first floor next to stairwell1");
+        room4 = new Room("in first room on the second floor that is next to hallway3");
+
         
         // initialise room exits
         outside.setExit("east", restaurant);
@@ -150,10 +159,16 @@ public class Game
         room3.setExit("north", hallway2);
         
         room4.setExit("east", hallway3);
+        
+        currentRoom = room3;// start in the hallway2(number 12 in the google docs)
+        previousRoom = hallway2;
+    
 
         startLocation = hallway2;
 
-    }
+
+  }
+    
     
     
     /**
@@ -187,11 +202,11 @@ public class Game
      */
     public void play() 
     {            
+
         message.printWelcome();
 
         // Enter the main command loop.  Here we repeatedly read commands and
         // execute them until the game is over.
-                
         boolean finished = false;
         while (! finished) {
             Command command = parser.getCommand(); // gets new command
@@ -200,7 +215,6 @@ public class Game
         System.out.println("Thank you for playing.  Good bye.");
     }
 
-    
     // /**
      // * Given a command, process (that is: execute) the command.
      // * @param command The command to be processed.
@@ -225,9 +239,33 @@ public class Game
                 // goRoom(command);
                 // break;
                 
+/**
+========================================
+ this switch goes into Actions Class
+            case LOOK:
+                look(command);
+                break;
+                
+            case BACK:
+                goBack();
+                break;
+                
+            case MARK: 
+                 setRoom(currentRoom); 
+                 break;
+            //case BACK:
+            //    back(command);
+            //    break;
+                
+            case STACKBACK:
+                stackBack(command);
+                break;
+                
+
             // case LOOK:
                 // lookAround(command);
                 // break;
+
 
             // case QUIT:
                 // wantToQuit = quit(command);
@@ -261,8 +299,104 @@ public class Game
             // return;
         // }
 
-        // String direction = command.getSecondWord();
 
+        // String direction = command.getSecondWord();
+/**
+        // Try to leave current room.
+
+        Room nextRoom = currentRoom.getExit(direction);
+       if (nextRoom == null) {
+            System.out.println("There is no door!");
+        }
+        else
+        {
+           previousRoom = currentRoom;
+           currentRoom = nextRoom;
+           System.out.println(currentRoom.printLocationInfo());
+        }
+     }
+    
+     private void look(Command command) 
+     {
+        if (command.hasSecondWord())
+        { 
+        System.out.println("look what?");  
+        return;
+      }
+        System.out.println(currentRoom.printLocationInfo());
+        }
+     
+        private void back(Command command) 
+     {
+      if (command.hasSecondWord())
+        { 
+        System.out.println("Back what?");  
+        return;
+      }
+     
+      if (previousRoom == null) {
+            System.out.println("Sorry, cannot go back!");
+            return;
+        }
+        roomStack.push(currentRoom);
+        Room temp = currentRoom;
+        currentRoom = previousRoom;
+        previousRoom = temp;
+        System.out.println("You gone back to the previous Room.");
+        System.out.println("And now" + currentRoom.printLocationInfo() );
+     }
+     
+     private void stackBack(Command command)
+     {
+         if (command.hasSecondWord())
+        { 
+          System.out.println("sackBack what?");  
+           return;
+        }
+        
+        if (previousRoom == null) {
+            System.out.println("Sorry, cannot go stackback!");
+            return;
+        }
+        previousRoom = currentRoom;
+        roomStack.push(currentRoom);
+        currentRoom = roomStack.pop();
+        System.out.println("You have gone Stack back");
+        System.out.println("And now" + currentRoom.printLocationInfo() );
+     }
+        
+     private void setRoom(Room room) 
+    {
+        previousRoom = currentRoom;
+        System.out.println("You were went back and now");
+     }
+    
+    private boolean goBack()
+    {
+       if (previousRoom == null) {
+            System.out.println("There is no door!");
+            return false;
+        }
+       currentRoom =  previousRoom;
+       System.out.println("You went back!");
+       System.out.println("And now" + currentRoom.printLocationInfo() );
+       //return true;
+    
+        Room nextRoom = player.getCurrentRoom().getExit(direction);
+
+        if (nextRoom == null) {
+            System.out.println("There is no door!");
+        }
+        else {
+            player.setCurrentRoom(nextRoom);
+            System.out.println(player.getCurrentRoom().printLocationInfo());
+        }
+    }
+   
+    
+ 
+    
+*/
         // // Try to leave current room.
         // Room nextRoom = player.getCurrentRoom().getExit(direction);
 
