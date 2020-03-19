@@ -1,13 +1,16 @@
 
 /**
- * Write a description of class EscapeFromHotel here.
+ * Escape From Hotel is a Text Adventure game where the player needs to 
+ * type their way out of the maze which is a hotel. 
+ * 
+ * This Class executes the main String starts the game.
  *
  * @author Matthew Sheehan and Marcelle Tamegnon
  * @version 3/18/2020
  */
 public class EscapeFromHotel
 {
-    // instance variables - replace the example below with your own
+    private Game HotelEscape;
 
     /**
      * Launch EscapeFromHotel
