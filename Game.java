@@ -11,6 +11,10 @@ import java.util.*;
  * 
  * @ Matt Sheehan & Macelle Tamegnon
  * @ 2020/03/19
+
+ * @author  Matthew Sheehan
+ * @version 3/18/2020
+
  */
 
 public class Game 
@@ -20,18 +24,24 @@ public class Game
     private Room currentRoom;
     private Room previousRoom; 
     private Stack<Room> roomStack;
-    
+    private Player player;
+   
     /**
      * Create the game and initialise its internal map.
      */
     public Game() 
     {
+        
         createRooms();
+        
+        createItems();
         parser = new Parser();
+        
     }
 
     /**
-     * Create all the rooms and link their exits together.
+     * Create all the rooms and link their exits together and
+     * then create and place a player in a room.
      */
     private void createRooms()
     {
@@ -76,6 +86,7 @@ public class Game
         outside.setExit("south", lobby);
         outside.setExit("west", stairwell);
 
+
         lobby.setExit("north",outside);
         staffRoom.setExit("north",stairwell );
         staffRoom.setExit("east",lobby);
@@ -110,11 +121,29 @@ public class Game
         room1.setExit("east", hallway1);
         room3.setExit("north", hallway2);
         room4.setExit("east", hallway3);
-
+        
         currentRoom = room3;// start in the hallway2(number 12 in the google docs)
         previousRoom = hallway2;
-    }
+    
 
+    player = new Player(hallway2);  // start in the hallway2(number 12 in the google docs)
+
+  }
+    
+    
+    /**
+     * Create all the items and place them in their starting rooms.
+     */
+    private void createItems()
+    {
+        Items flashlight, rock, map, backpack;
+        
+        flashlight = new Items("FlashLight");
+        rock = new Items("Rock");
+        map = new Items("Map");
+        backpack = new Items("BackPack");
+    }
+    
     /**
      *  Main play routine.  Loops until end of play.
      */
@@ -141,7 +170,11 @@ public class Game
         System.out.println("World of Zuul is a new, incredibly boring adventure game.");
         System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
         System.out.println();
+
         System.out.println(currentRoom.printLocationInfo());
+
+        System.out.println(player.getCurrentRoom().printLocationInfo());
+
     }
 
     /**
@@ -226,6 +259,7 @@ public class Game
         String direction = command.getSecondWord();
 
         // Try to leave current room.
+
         Room nextRoom = currentRoom.getExit(direction);
        if (nextRoom == null) {
             System.out.println("There is no door!");
@@ -302,10 +336,34 @@ public class Game
        currentRoom =  previousRoom;
        System.out.println("You went back!");
        System.out.println("And now" + currentRoom.printLocationInfo() );
-       return true;
+       //return true;
+    
+        Room nextRoom = player.getCurrentRoom().getExit(direction);
+
+        if (nextRoom == null) {
+            System.out.println("There is no door!");
+        }
+        else {
+            player.setCurrentRoom(nextRoom);
+            System.out.println(player.getCurrentRoom().printLocationInfo());
+        }
+    }
+   
+    
+    /**
+     * Player looks around and describes room.
+     * Prints long description of current room
+     * 
+     * @param command given from player
+     */
+    private void lookAround(Command command) 
+    {
+        System.out.println(player.getCurrentRoom().printLocationInfo());
+
     }
     
 
+    
     /** 
      * "Quit" was entered. Check the rest of the command to see
      * whether we really quit the game.
