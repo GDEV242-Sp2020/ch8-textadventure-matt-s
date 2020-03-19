@@ -64,7 +64,7 @@ public class Room
      */
     public String printLocationInfo()
     {
-        return "You are " + description + ".\n" + getExitString();
+        return "You are " + description + ".\n" +getItemsString() + ".\n" + getExitString();
     }
     
     /**
