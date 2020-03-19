@@ -55,7 +55,12 @@ public class Parser
 
         return new Command(commands.getCommandWord(word1), word2);
     }
-
+    
+    public String returnCommands()
+    {
+        return commands.showAllString();
+    }
+    
     /**
      * Print out a list of valid command words.
      */

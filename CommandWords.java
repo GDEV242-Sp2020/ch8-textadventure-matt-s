@@ -55,7 +55,20 @@ public class CommandWords
     {
         return validCommands.containsKey(aString);
     }
-
+    
+    /**
+     * Collects all valid commands to a String
+     * @return member String of all valid commands
+     */
+    public String showAllString(){
+        String m_validCommands ="";
+        for(String command : validCommands.keySet()) {
+            m_validCommands = command + "  ";
+        }
+        return m_validCommands;
+        
+    }
+    
     /**
      * Print all valid commands to System.out.
      */
