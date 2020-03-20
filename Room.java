@@ -21,7 +21,8 @@ public class Room
 {
     private String description;
     private HashMap<String, Room> exits;        // stores exits of this room.
-    private HashSet<Items> roomItems;   //stores the items in this room
+    private HashSet<Items> roomItems;
+    private boolean isDark;//stores the items in this room
     
     /**
      * Create a room described "description". Initially, it has
@@ -33,7 +34,8 @@ public class Room
     {
         this.description = description;
         exits = new HashMap<>();
-        roomItems = new HashSet<Items>();
+        isDark = false;  //all rooms start with light
+        roomItems = new HashSet<Items>(); //container to track items in room.
         
     }
 
@@ -158,4 +160,15 @@ public class Room
         return returnString;
     }
     
+    public boolean isDark(){ //getter for isDark
+        return isDark;   
+    }
+    
+    public void setDarkTRUE(){
+        isDark = true;
+    }
+    
+    public void setDarkFalse(){
+        isDark = false;
+    }
 }
