@@ -28,6 +28,7 @@ public class Game
     public static Player player; // public so other classes can react on Player through Game
     private Message message;
     private Room startLocation; //allows player to be created in constructor
+    public Items flashlight, rock, map, backpack;
     public HashSet<Items> GameItems;
     
     //declare rooms here so they can be used game wide
@@ -63,7 +64,7 @@ public class Game
     
     
     /**
-     * Create all the room objects and link their exits together and
+     * Create all the room objects and initialize all of their characteristics.
      * then create and place a player in a room.
      */
     private void createRooms()
@@ -94,13 +95,16 @@ public class Game
        
 
         swimmingPool = new Room("in the room on the second floor that holds the swimmingpool");
+        swimmingPool.setDarkTRUE();
+        
+        
         elevator1 = new Room("in the elevator that goes from restaurant to hallway1");
         elevator2 = new Room("in the other elevator that goes from hallway1 to hallway3");
         restaurant = new Room(" in the hotel restaurant.");
         
         //NOTE want to create rooms that cant be accessed. 
         
-        occupiedRoom = new Room(" in a hotel room");
+        occupiedRoom = new Room("in a hotel room that seems occupied");
         
         room1 = new Room("in first empty room on the first floor");
         room3 = new Room("in second empty room on the  first floor next to stairwell1");
@@ -123,7 +127,7 @@ public class Game
         hallway1.setExit("east", parking1);
         hallway1.setExit("west", room1);
         
-        hallway2.setExit("west", stairwell2);
+        hallway2.setExit("east", stairwell2);
         hallway2.setExit("north", occupiedRoom);
         hallway2.setExit("south", room3);
         
@@ -131,17 +135,22 @@ public class Game
         hallway3.setExit("east",parking2);
         hallway3.setExit("west",room4);
         
-        hallway4.setExit("west", stairwell3);
+        hallway4.setExit("east", stairwell3);
         hallway4.setExit("north", roof);
         hallway4.setExit("south", swimmingPool);
         
-        stairwell.setExit("east",lobby);
+        stairwell.setExit("west",lobby);
         stairwell.setExit("south",staffRoom);
+        stairwell.setExit("up", stairwell2);
         
         stairwell2.setExit("west", hallway2);
-        stairwell2.setExit("north", stairwell3);
+        stairwell2.setExit("up", stairwell3);        
+        stairwell2.setExit("down", stairwell);
         
-        stairwell3.setExit("north", roof);
+        stairwell3.setExit("west", hallway4);
+        stairwell3.setExit("down", stairwell2);
+        
+        swimmingPool.setExit("north", hallway4);
         
         roof.setExit("south", hallway4);
         
@@ -181,7 +190,7 @@ public class Game
      */
     private void createItems()
     {
-        Items flashlight, rock, map, backpack;
+        
         
         flashlight = new Items("flashlight");
         flashlight.setDescription(new Message().itemDescription(flashlight));
@@ -218,6 +227,31 @@ public class Game
         System.out.println("Thank you for playing.  Good bye.");
     }
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     // /**
      // * Given a command, process (that is: execute) the command.
      // * @param command The command to be processed.
