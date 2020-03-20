@@ -14,7 +14,7 @@ public class Actions extends Game
      */
     public Actions()
     {
-
+        
     }
 
     /**
@@ -179,8 +179,10 @@ public class Actions extends Game
      */
     private void showInventory()
     {
-        System.out.println("Shows Inventory");    
+        for(Items items : GameItems){
+            System.out.print( items.getName()+ " ");    
     }
+}
     
 
     /** 
