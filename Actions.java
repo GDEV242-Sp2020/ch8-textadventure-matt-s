@@ -17,17 +17,6 @@ public class Actions extends Game
 
     }
 
-    /**
-     * An example of a method - replace this comment with your own
-     *
-     * @param  y  a sample parameter for a method
-     * @return    the sum of x and y
-     */
-    public int sampleMethod(int y)
-    {
-        // put your code here
-        return y;
-    }
     
     /**
      * Given a command, process (that is: execute) the command.
@@ -75,7 +64,9 @@ public class Actions extends Game
             case INVENTORY:
                 showInventory();
                 break;
-                
+            case BACK:
+                goBack();
+                break;
         }
         return wantToQuit;
     }
@@ -180,11 +171,21 @@ public class Actions extends Game
     private void showInventory()
     {
            for(Items items : GameItems){
-            System.out.print( items.getName()+ " ");    
+            System.out.print(items.getName()+ " ");    
         }
     }
     
-    
+    private boolean goBack() {
+        player.setCurrentRoom(getPreviousRoom());
+        if (getPreviousRoom() == null) {
+            System.out.println("You never bothered to remember any place...");
+            return false;
+        }
+        Room currentRoom  = getPreviousRoom();
+        System.out.println("You went back!");
+        System.out.println(player.getCurrentRoom().printLocationInfo());
+        return true;
+    }
 
     /** 
      * "Quit" was entered. Check the rest of the command to see

@@ -167,9 +167,27 @@ public class Game
         startLocation = hallway2;
 
 
-  }
+    }
     
+    /**
+     * current room player is in
+     * @return current room
+     */
+    public Room getCurrentRoom()
+    {
+        return currentRoom;
+    }
     
+  
+    
+    /**
+     * current room player is in
+     * @return current room
+     */
+    public  Room getPreviousRoom()
+    {
+        return previousRoom;
+    }
     
     /**
      * Create all the items and place them in their starting rooms.

@@ -18,6 +18,7 @@ public class Player
     private int itemLimit;
     private int itemsHeld;
     private Room currentRoom;
+    private Room previousRoom;
     private HashSet<Items> Inventory;
     private boolean haveBackpack;
 
@@ -44,10 +45,12 @@ public class Player
         return currentRoom;
     }
     
+    
+    
     /**
      * set current room player is in
      */
-    public void setCurrentRoom(Room room)
+    public  void  setCurrentRoom(Room room)
     {
         currentRoom = room;
     }
