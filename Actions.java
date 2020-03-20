@@ -138,12 +138,15 @@ public class Actions extends Game
      */
     private void lookAround(Command command) 
     {
-        System.out.println(player.getCurrentRoom().printLocationInfo());
+        if(player.getCurrentRoom().isDark()){ //if players currentRoom isDark = true
+            System.out.println("It's too dark in here to see anything.");
+        }else{
+            System.out.println(player.getCurrentRoom().printLocationInfo());
+        }
     }
 
     /**
-     * Player looks around and describes room.
-     * Prints long description of current room
+     * action to use an item
      * 
      * @param command given from player
      */
@@ -152,24 +155,21 @@ public class Actions extends Game
         System.out.println("Uses Item");
         if(!command.hasSecondWord()) {
             // if there is no second word, we don't know where to go...
-            System.out.println("Go where?");
+            System.out.println("Use What?");
             return;
         }
 
-        String direction = command.getSecondWord();
-
-        // Try to leave current room.
-        Room nextRoom = player.getCurrentRoom().getExit(direction);
+        String item = command.getSecondWord();
         
-        
-        //LOCKED else if.
-        
-        if (nextRoom == null) {
-            System.out.println("There is no door!");
-        }
-        else {
-            player.setCurrentRoom(nextRoom);
-            System.out.println(player.getCurrentRoom().printLocationInfo());
+        switch(item){ //
+            case "flashlight" :
+            if(flashlight.isHeld()){ //flashlight is being held
+            
+            }
+                break;
+            
+            default : 
+                System.out.println("This item does not have a use.");
         }
     }
     
