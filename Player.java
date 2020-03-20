@@ -19,7 +19,10 @@ public class Player
     private int itemsHeld;
     private Room currentRoom;
     private HashSet<Items> Inventory;
+    //specific item using   == might need refactoring.
     private boolean haveBackpack;
+    private boolean usingFlashlight;
+    
 
     /**
      * Constructor for objects of class Player
@@ -32,6 +35,7 @@ public class Player
         itemsHeld = 0; //Start with no items being held
         itemLimit = 1; // can only hold 2 items until a backpack
         haveBackpack = false; //no backpack at start
+        usingFlashlight = false;
     }
     
     //Room functionality: ***********************
@@ -52,37 +56,7 @@ public class Player
         currentRoom = room;
     }
     
-    
-    //Backpack Functionality: ****************************
-    /**
-     * Reflect player picking up backpack
-     * haveBackpack = true
-     */
-    public void getBackpack()
-    {
-        itemLimit = 3;
-        haveBackpack = true;
-    }   
-    
-    /**
-     * Reflect player dropping backpack
-     * haveBackpack = true
-     */
-    public void dropBackpack()
-    {
-        itemLimit = 1;
-        haveBackpack = false;
-    }
-    
-    /**
-     * is Player wearing backpack?
-     * @return haveBackPack 
-     */
-    public boolean haveBackpack()
-    {
-        return haveBackpack;
-    }
-    
+
     
     //Item Functionality: ****************
     /**
@@ -107,7 +81,7 @@ public class Player
     }
     
     /**
-     * Check to see if Item is on player
+     * Check to see if Item is on player (contained in Inventory)
      * @param  item     an Items object
      */
     public boolean haveItem(Items item)
@@ -140,16 +114,61 @@ public class Player
         currentRoom.addItem(item);
     }
     
+    
+    
+    
+    //BACKPACK
     /**
-     * An example of a method - replace this comment with your own
-     *
-     * @param  y  a sample parameter for a method
-     * @return    the sum of x and y
+     * Reflect player picking up backpack
+     * haveBackpack = true
      */
-    public void sampleMethod3(int y)
+    public void getBackpack()
     {
-
+        itemLimit = 3;
+        haveBackpack = true;
+    }   
+    
+    /**
+     * Reflect player dropping backpack
+     * haveBackpack = true
+     */
+    public void dropBackpack()
+    {
+        itemLimit = 1;
+        haveBackpack = false;
     }
+    
+    /**
+     * is Player wearing backpack?
+     * @return haveBackPack 
+     */
+    public boolean haveBackpack()
+    {
+        return haveBackpack;
+    }
+    
+    
+    //FLASHLIGHT
+    /**
+     * Flashlight check
+     *
+     * @return    flashlight state. On = true. Off = false.
+     */
+    public boolean isFlashlightON()
+    {
+        return usingFlashlight;
+    }
+    /**
+     * Flashlight switch, flips to opposite. defaulted as false.
+     * check isHeld is in actions.
+     */
+    public void flashlightSwitch()
+    {
+        usingFlashlight = !usingFlashlight;
+    }
+    
+    
+    
     
     /**
      * An example of a method - replace this comment with your own
