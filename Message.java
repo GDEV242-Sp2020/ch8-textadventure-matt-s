@@ -31,19 +31,8 @@ public class Message
         key         = "This key is metal and shiny. Hopefully unlocks an important door";
         backpack    = "Wearing this backpack should allow me to carry a couple more items";
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+         
+
     }
     
     /**

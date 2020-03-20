@@ -98,7 +98,10 @@ public class Game
         elevator2 = new Room("in the other elevator that goes from hallway1 to hallway3");
         restaurant = new Room(" in the hotel restaurant.");
         
-        occupiedRoom = new Room("you can't open this door the room is occupied");
+        //NOTE want to create rooms that cant be accessed. 
+        
+        occupiedRoom = new Room(" in a hotel room");
+        
         room1 = new Room("in first empty room on the first floor");
         room3 = new Room("in second empty room on the  first floor next to stairwell1");
         room4 = new Room("in first room on the second floor that is next to hallway3");
@@ -160,8 +163,8 @@ public class Game
         
         room4.setExit("east", hallway3);
         
-        currentRoom = room3;// start in the hallway2(number 12 in the google docs)
-        previousRoom = hallway2;
+        //currentRoom = hallway2;// start in the hallway2(number 12 in the google docs)
+        //previousRoom = hallway2;
     
 
         startLocation = hallway2;
