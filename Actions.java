@@ -122,7 +122,7 @@ public class Actions extends Game
         }
         else {
             player.setCurrentRoom(nextRoom);
-            System.out.println(player.getCurrentRoom().getLongDescription());
+            System.out.println(player.getCurrentRoom().printLocationInfo());
         }
     }
    
@@ -135,7 +135,7 @@ public class Actions extends Game
      */
     private void lookAround(Command command) 
     {
-        System.out.println(player.getCurrentRoom().getLongDescription());
+        System.out.println(player.getCurrentRoom().printLocationInfo());
     }
 
     /**
@@ -179,8 +179,11 @@ public class Actions extends Game
      */
     private void showInventory()
     {
-        System.out.println("Shows Inventory");    
+           for(Items items : GameItems){
+            System.out.print( items.getName()+ " ");    
+        }
     }
+    
     
 
     /** 
