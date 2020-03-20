@@ -14,7 +14,6 @@ public class Actions extends Game
      */
     public Actions()
     {
-
     }
 
     /**
@@ -64,6 +63,10 @@ public class Actions extends Game
                 
             case TAKE:
                 takeItem(command);
+                break;
+                
+            case USE:
+                useItem(command);
                 break;
                 
             case THROW:
@@ -144,9 +147,63 @@ public class Actions extends Game
      * 
      * @param command given from player
      */
+    private void useItem(Command command)
+    {
+        System.out.println("Uses Item");
+        if(!command.hasSecondWord()) {
+            // if there is no second word, we don't know where to go...
+            System.out.println("Go where?");
+            return;
+        }
+
+        String direction = command.getSecondWord();
+
+        // Try to leave current room.
+        Room nextRoom = player.getCurrentRoom().getExit(direction);
+        
+        
+        //LOCKED else if.
+        
+        if (nextRoom == null) {
+            System.out.println("There is no door!");
+        }
+        else {
+            player.setCurrentRoom(nextRoom);
+            System.out.println(player.getCurrentRoom().printLocationInfo());
+        }
+    }
+    
+    
+    /**
+     * Player looks around and describes room.
+     * Prints long description of current room
+     * 
+     * @param command given from player
+     */
     private void takeItem(Command command)
     {
-        System.out.println("Takes Items");
+        System.out.println("Takes Item");
+        if(!command.hasSecondWord()) {
+            // if there is no second word, we don't know where to go...
+            System.out.println("Go where?");
+            return;
+        }
+
+        String direction = command.getSecondWord();
+
+        // Try to leave current room.
+        Room nextRoom = player.getCurrentRoom().getExit(direction);
+        
+        
+        //LOCKED else if.
+        
+        if (nextRoom == null) {
+            System.out.println("There is no door!");
+        }
+        else {
+            player.setCurrentRoom(nextRoom);
+            System.out.println(player.getCurrentRoom().printLocationInfo());
+        }
     }
     
     /**
@@ -157,7 +214,25 @@ public class Actions extends Game
      */
     private void throwItem(Command command)
     {
-        System.out.println("Throws Items");    
+        System.out.println("Throws Item");
+        if(!command.hasSecondWord()) {
+            // if there is no second word, we don't know where to go...
+            System.out.println("Go where?");
+            return;
+        }
+
+        String direction = command.getSecondWord();
+
+        // Try to leave current room.
+        Room nextRoom = player.getCurrentRoom().getExit(direction);
+
+        if (nextRoom == null) {
+            System.out.println("There is no door!");
+        }
+        else {
+            player.setCurrentRoom(nextRoom);
+            System.out.println(player.getCurrentRoom().printLocationInfo());
+        }    
     }
     
     /**
@@ -168,7 +243,25 @@ public class Actions extends Game
      */
     private void dropItem(Command command)
     {
-        System.out.println("Drops Items");    
+        System.out.println("Drops Item");
+        if(!command.hasSecondWord()) {
+            // if there is no second word, we don't know where to go...
+            System.out.println("Go where?");
+            return;
+        }
+
+        String direction = command.getSecondWord();
+
+        // Try to leave current room.
+        Room nextRoom = player.getCurrentRoom().getExit(direction);
+
+        if (nextRoom == null) {
+            System.out.println("There is no door!");
+        }
+        else {
+            player.setCurrentRoom(nextRoom);
+            System.out.println(player.getCurrentRoom().printLocationInfo());
+        }    
     }
     
     /**
