@@ -2,6 +2,7 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.ArrayList;
 
 /**
  * Class Room - a room in an adventure game.
@@ -23,6 +24,7 @@ public class Room
     private HashMap<String, Room> exits;        // stores exits of this room.
     private HashSet<Items> roomItems;
     private boolean isDark;//stores the items in this room
+    private ArrayList<NPC> npcs; //Non Player Characters list
     
     /**
      * Create a room described "description". Initially, it has
@@ -33,10 +35,10 @@ public class Room
     public Room(String description) 
     {
         this.description = description;
-        exits = new HashMap<>();
+        exits = new HashMap<String, Room>();
         isDark = false;  //all rooms start with light
         roomItems = new HashSet<Items>(); //container to track items in room.
-        
+        npcs = new ArrayList<NPC>();
     }
 
     /**
@@ -109,6 +111,10 @@ public class Room
         return exits.get(direction);
     }
     
+    
+    
+    
+    
     //Item Functionality *********************
     
     /**
@@ -138,7 +144,24 @@ public class Room
     {
         roomItems.remove(item);
     }
-
+    
+    /**
+     * Searches room for item with a specific name
+     * @param name String of item to be returned
+     * @return Items object from roomItems set or null if not found.
+     */
+    public Items getItem(String name)
+    {
+        for(Items item : roomItems){
+                if(item.getName().equals(name))
+                    return item;
+            }   
+            
+            
+        System.out.println("no item of this name found here");
+        return null;
+    }
+    
     /**
      * Return a string describing the room's items, for example
      * "Items in room: lamp, rock".
