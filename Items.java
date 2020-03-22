@@ -4,7 +4,7 @@
  * They are created at the beginning of the game with a name, description,
  * boolean is held, location, weight
  *
- * @author Matthew Sheehan
+ * @author Matthew Sheehan and Marcelle Tamegnon
  * @version 3/16/2020
  */
 public class Items

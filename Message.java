@@ -8,6 +8,7 @@
 public class Message
 {
     // instance variables - replace the example below with your own
+    private Player player;
     private String flashlight;
     private String rock;
     private String map;
@@ -18,8 +19,9 @@ public class Message
      * Constructor initializes all the messages to strings which will be 
      * called in the get method. specifically descriptions
      */
-    public Message()
+    public Message(Player player)
     {
+        this.player = player;
         //ITEM STRINGS:
         flashlight  = "This flashlight is one of those heavy, powerful ones. Hopefully it has " 
                     + "enough battery life to serve its function. It's definitely heavy enough to "
@@ -71,6 +73,7 @@ public class Message
      */
     public void printWelcome()
     {
+        
         System.out.println();
         System.out.println("Escape from the Hotel");
         System.out.println("======================");
@@ -89,7 +92,16 @@ public class Message
         System.out.println("see if anyone truly is after you.");
         System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
         System.out.println();
-        System.out.println(Game.player().getCurrentRoom().printLocationInfo());
+        System.out.println(player.getCurrentRoom().printLocationInfo());
+    }
+    
+    public void setPlayer(Player player)
+    {
+        this.player = player;
+    }
+    public Player getPlayer()
+    {
+        return player;
     }
     
     /**
