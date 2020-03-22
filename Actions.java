@@ -2,31 +2,37 @@
 /**
  * Write a description of class Actions here.
  *
- * @author (your name)
+ * @author Matthew Sheehan Marcelle Tamegnon
  * @version (a version number or a date)
  */
 public class Actions extends Game
 {
     private CommandWords commands;
-
+    private Player player; 
+    private Room currentRoom;
     /**
      * Constructor for objects of class Actions
      */
     public Actions()
     {
+      // super.updateCurrentRoom();
+       player = super.player();
+       currentRoom = super.player().getCurrentRoom();
+       
     }
 
     /**
-     * An example of a method - replace this comment with your own
+     * Update Game class to show Player's currentRoom stored
+     * temporarily in this action
      *
      * @param  y  a sample parameter for a method
      * @return    the sum of x and y
      */
-    public int sampleMethod(int y)
-    {
-        // put your code here
-        return y;
-    }
+    // public void updateRoom()
+    // {
+        
+        // player.setCurrentRoom(room);
+    // }
     
     /**
      * Given a command, process (that is: execute) the command.
@@ -85,51 +91,39 @@ public class Actions extends Game
    
     
     // implementations of user commands:
-
-    /**
-     * Print out some help information.
-     * Here we print some stupid, cryptic message and a list of the 
-     * command words.
-     */
-    private void printHelp() 
-    {
-        commands = new CommandWords();
-        String tempCommandWords = commands.showAllString();
-        System.out.println("You are lost. You are alone. You wander");
-        System.out.println("around at the university.");
-        System.out.println();
-        System.out.println("Your command words are:");
-        System.out.println(tempCommandWords);
-    }
-
     
+    //GO ROOM
     /** 
      * Try to go in one direction. If there is an exit, enter the new
      * room, otherwise print an error message.
      */
-    private void goRoom(Command command) 
-    {
-        if(!command.hasSecondWord()) {
-            // if there is no second word, we don't know where to go...
-            System.out.println("Go where?");
-            return;
-        }
+    // private void goRoom(Command command) 
+    // {
+        // if(!command.hasSecondWord()) {
+            // // if there is no second word, we don't know where to go...
+            // System.out.println("Go where?");
+            // return; //exit
+        // }
 
-        String direction = command.getSecondWord();
+        // String direction = command.getSecondWord(); // set direction word
 
-        // Try to leave current room.
-        Room nextRoom = player.getCurrentRoom().getExit(direction);
+        // // Try to leave current room.
+        // Room nextRoom = getCurrentRoom().getExit(direction); //stores room request
 
-        if (nextRoom == null) {
-            System.out.println("There is no door!");
-        }
-        else {
-            player.setCurrentRoom(nextRoom);
-            System.out.println(player.getCurrentRoom().printLocationInfo());
-        }
-    }
+        // if (nextRoom == null) { //Room requested doesnt exist.
+            // System.out.println("There is no door!");
+        // }
+        // else { //Room request found. Player moves into new room.
+            // //pushRoomHistory(nextRoom);
+            // setCurrentRoom(nextRoom);
+            // super.player.setCurrentRoom(nextRoom);
+            // System.out.println(super.getCurrentRoom().printLocationInfo());
+        // }
+    // }
    
     
+    
+    //LOOK AROUND
     /**
      * Player looks around and describes room.
      * Prints long description of current room
@@ -275,6 +269,27 @@ public class Actions extends Game
         System.out.println("Shows Inventory");    
     }
     
+    
+    
+    //HELP
+    
+    /**
+     * Print out some help information.
+     * Here we print some stupid, cryptic message and a list of the 
+     * command words.
+     */
+    private void printHelp() 
+    {
+        commands = new CommandWords();
+        String tempCommandWords = commands.showAllString();
+        System.out.println("You are lost. You are alone. You wander");
+        System.out.println("around at the university.");
+        System.out.println();
+        System.out.println("Your command words are:");
+        System.out.println(tempCommandWords);
+    }
+    
+    //QUIT
 
     /** 
      * "Quit" was entered. Check the rest of the command to see
