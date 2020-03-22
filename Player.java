@@ -1,5 +1,9 @@
 import java.util.Set;
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
+
+import java.util.Stack;
+
 import java.util.Iterator;
 /**
  * Player class is created at game launch and acts as the player's avatar.
@@ -15,10 +19,13 @@ import java.util.Iterator;
 public class Player
 {
     // instance variables - replace the example below with your own
-    private int itemLimit;
+    private int itemLimit; //max carry
     private int itemsHeld;
     private Room currentRoom;
-    private HashSet<Items> Inventory;
+    private HashMap<String, Items> Inventory; //key is String. value is Items
+    
+    private Stack<Room> roomHistory;
+    
     //specific item using   == might need refactoring.
     private boolean haveBackpack;
     private boolean usingFlashlight;
@@ -30,13 +37,19 @@ public class Player
      */
     public Player(Room room)
     {
-       Inventory = new HashSet<Items>();
-       currentRoom = room; //Starting Room Number 1
+       Inventory = new HashMap<String, Items>();
+        currentRoom = room; //Starting Room Number 1
         itemsHeld = 0; //Start with no items being held
-        itemLimit = 1; // can only hold 2 items until a backpack
+        itemLimit = 2; // can only hold 2 items until a backpack
+        Inventory = new HashMap<String, Items>();
+        
+        roomHistory = new Stack<Room>();
+        
         haveBackpack = false; //no backpack at start
         usingFlashlight = false;
     }
+    
+    
     
     //Room functionality: ***********************
     /**
@@ -56,9 +69,20 @@ public class Player
         currentRoom = room;
     }
     
-
+    
+    
     
     //Item Functionality: ****************
+    /**
+     * Returns an item from inventory by name
+     * @param name String of the item
+     * @return the Items object with corresponding name
+     */
+    public Items getItem(String name)
+    {
+        return Inventory.get(name);
+    }
+    
     /**
      * Return a string describing the player's items, for example
      * "Items you are holding: lamp, rock".
@@ -72,7 +96,7 @@ public class Player
         } else {
             returnString = "Items you are holding:";
             String temp = "";
-            for(Items item : Inventory) {
+            for(Items item : Inventory.values()) {
                 temp += ", " + item.getName() ; 
             }
             returnString += temp.substring(1);
@@ -86,8 +110,8 @@ public class Player
      */
     public boolean haveItem(Items item)
     {
-        boolean haveItem = Inventory.contains(item);
-        return haveItem;
+        //boolean haveItem = Inventory.values().contains(item);
+        return Inventory.containsValue(item);
     }
     
     /**
@@ -97,8 +121,13 @@ public class Player
     public void takeItem(Items item)
     {
         if(!haveItem(item) || currentRoom.haveItem(item)){
-            Inventory.add(item);
-            currentRoom.removeItem(item);
+            if(itemsHeld >= itemLimit) 
+                System.out.println("Inventory is full. Drop something first");
+            else{
+                Inventory.put(item.getName(), item);
+                currentRoom.removeItem(item);
+                itemsHeld ++; //inventory tracker +1
+            }
         }
     }
     
@@ -112,6 +141,7 @@ public class Player
         if(haveItem(item))
         Inventory.remove(item);
         currentRoom.addItem(item);
+        itemsHeld --; //inventory tracker -1
     }
     
     
@@ -148,6 +178,8 @@ public class Player
     }
     
     
+    
+    
     //FLASHLIGHT
     /**
      * Flashlight check
@@ -158,6 +190,7 @@ public class Player
     {
         return usingFlashlight;
     }
+    
     /**
      * Flashlight switch, flips to opposite. defaulted as false.
      * check isHeld is in actions.
