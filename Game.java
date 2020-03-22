@@ -12,30 +12,29 @@ import java.util.HashSet;
  * 
  * @ Matt Sheehan & Macelle Tamegnon
  * @ 2020/03/19
-
- * @author  Matthew Sheehan
- * @version 3/18/2020
-
  */
 public class Game 
 
 {
-
-    private Room currentRoom;
-    private Room previousRoom; 
+    Room outside,staffRoom ,kitchen,hallway1,hallway2;
+    Room stairwell, parking1,parking2,roof,swimmingPool,elevator,restaurant;
+    Room stairwell2,stairwell3,occupiedRoom,lobby,hallway3,hallway4;
+    Room elevator1,elevator2, room1,room3,room4;
+    
+    private Room currentRoomG;
+    private Room previousRoom;
     private Stack<Room> roomStack;
+    
     public Parser parser;
-    public static Player player; // public so other classes can react on Player through Game
+    private Player player; // public so other classes can react on Player through Game
+    
     private Message message;
     private Room startLocation; //allows player to be created in constructor
     public Items flashlight, rock, map, backpack;
     public HashSet<Items> GameItems;
     
     //declare rooms here so they can be used game wide
-    Room outside,staffRoom ,kitchen,hallway1,hallway2;
-    Room stairwell, parking1,parking2,roof,swimmingPool,elevator,restaurant;
-    Room stairwell2,stairwell3,occupiedRoom,lobby,hallway3,hallway4;
-    Room elevator1,elevator2, room1,room3,room4;
+    
 
     /**
      * Create the game and initialise its internal map.
@@ -43,25 +42,46 @@ public class Game
     public Game() 
     {
         
-        
+        Stack<Room> roomStack = new Stack<Room>();
         GameItems = new HashSet<Items>();
         createRooms();
-        createItems();
+       
         player = new Player(startLocation);  // start in the hallway2(number 12 in the google docs)
         parser = new Parser();
-        message = new Message();
+        message = new Message(player);
+        
+        
         
     }
     
+    public void pushRoomHistory(Room currentRoom)
+    {
+        roomStack.push(currentRoom);
+    }
     
     /**
      * This method allows Game's Player object to be accessed elsewhere in package
      */
-    static public Player player()
+    public Player player()
     {
     return player;
     }
     
+    public Room getCurrentRoom()
+    {
+        return player.getCurrentRoom();
+    }
+    
+    public void setCurrentRoom(Room room)
+    {
+        player.setCurrentRoom(room);
+        //currentRoom = room;
+    }
+    
+    // public  void updateCurrentRoom()
+    // {
+        // currentRoom = player.getCurrentRoom();
+    // }
     
     /**
      * Create all the room objects and initialize all of their characteristics.
@@ -69,7 +89,7 @@ public class Game
      */
     private void createRooms()
     {
-        
+
         
         // create the rooms
         outside = new Room(" outside the main entrance of the Hotel.");
@@ -144,7 +164,7 @@ public class Game
         stairwell.setExit("up", stairwell2);
         
         stairwell2.setExit("west", hallway2);
-        stairwell2.setExit("up", stairwell3);        
+        stairwell2.setExit("north", stairwell3);        
         stairwell2.setExit("down", stairwell);
         
         stairwell3.setExit("west", hallway4);
@@ -178,7 +198,7 @@ public class Game
 
         startLocation = hallway2;
 
-
+        createItems();
   }
     
     
@@ -193,7 +213,7 @@ public class Game
         
         
         flashlight = new Items("flashlight");
-        flashlight.setDescription(new Message().itemDescription(flashlight));
+        flashlight.setDescription(message.itemDescription(flashlight));
         occupiedRoom.addItem(flashlight);
         GameItems.add(flashlight);
         
@@ -214,19 +234,50 @@ public class Game
      */
     public void play() 
     {            
-
+    
         message.printWelcome();
-
-        // Enter the main command loop.  Here we repeatedly read commands and
-        // execute them until the game is over.
+    
+            // Enter the main command loop.  Here we repeatedly read commands and
+            // execute them until the game is over.
         boolean finished = false;
-        while (! finished) {
-            Command command = parser.getCommand(); // gets new command
-            finished = new Actions().processCommand(command);     // runs boolean check while decripting commandWord
-        }
-        System.out.println("Thank you for playing.  Good bye.");
+            while (! finished) {
+                Command command = parser.getCommand(); // gets new command
+                finished = new Actions().processCommand(command);     // runs boolean check while decripting commandWord
+            }
+            System.out.println("Thank you for playing.  Good bye.");
     }
 
+ 
+    /** 
+     * Try to go in one direction. If there is an exit, enter the new
+     * room, otherwise print an error message.
+     */
+     public void goRoom(Command command) 
+     {
+         if(!command.hasSecondWord()) {
+            // if there is no second word, we don't know where to go...
+            System.out.println("Go where?");
+            return;
+        }
+
+
+        String direction = command.getSecondWord();
+
+        // Try to leave current room.
+
+        Room nextRoom = player.getCurrentRoom().getExit(direction);
+        
+       if (nextRoom == null) {
+            System.out.println("There is no door!");
+        }
+        else
+        {
+           //previousRoom = currentRoom;
+           // = nextRoom;
+           player.setCurrentRoom(nextRoom);
+           System.out.println(player.getCurrentRoom().printLocationInfo());
+        }
+     }   
     
     
     
@@ -251,12 +302,11 @@ public class Game
     
     
     
-    
-    // /**
+     /**
      // * Given a command, process (that is: execute) the command.
      // * @param command The command to be processed.
      // * @return true If the command ends the game, false otherwise.
-     // */
+     // *
     // private boolean processCommand(Command command) 
     // {
         // boolean wantToQuit = false;
@@ -277,8 +327,6 @@ public class Game
                 // break;
                 
 
-/**
- * 
  
  this switch goes into Actions Class
             case LOOK:
@@ -324,113 +372,85 @@ public class Game
         // message.printHelp();
         // parser.showCommands();
     // }
-
+*/
     
-    // /** 
-     // * Try to go in one direction. If there is an exit, enter the new
-     // * room, otherwise print an error message.
-     // *
-    // private void goRoom(Command command) 
-    // {
-        // if(!command.hasSecondWord()) {
-            // // if there is no second word, we don't know where to go...
-            // System.out.println("Go where?");
+    
+     // private void look(Command command) 
+     // {
+        // if (command.hasSecondWord())
+        // { 
+        // System.out.println("look what?");  
+        // return;
+      // }
+        // System.out.println(currentRoom.printLocationInfo());
+        // }
+     
+        // private void back(Command command) 
+     // {
+      // if (command.hasSecondWord())
+        // { 
+        // System.out.println("Back what?");  
+        // return;
+      // }
+     
+      // if (previousRoom == null) {
+            // System.out.println("Sorry, cannot go back!");
             // return;
         // }
-
-
-        // String direction = command.getSecondWord();
-/**
-        // Try to leave current room.
-
-        Room nextRoom = currentRoom.getExit(direction);
-       if (nextRoom == null) {
-            System.out.println("There is no door!");
-        }
-        else
-        {
-           previousRoom = currentRoom;
-           currentRoom = nextRoom;
-           System.out.println(currentRoom.printLocationInfo());
-        }
-     }
-    
-     private void look(Command command) 
-     {
-        if (command.hasSecondWord())
-        { 
-        System.out.println("look what?");  
-        return;
-      }
-        System.out.println(currentRoom.printLocationInfo());
-        }
+        // roomStack.push(currentRoom);
+        // Room temp = currentRoom;
+        // currentRoom = previousRoom;
+        // previousRoom = temp;
+        // System.out.println("You gone back to the previous Room.");
+        // System.out.println("And now" + currentRoom.printLocationInfo() );
+     // }
      
-        private void back(Command command) 
-     {
-      if (command.hasSecondWord())
-        { 
-        System.out.println("Back what?");  
-        return;
-      }
-     
-      if (previousRoom == null) {
-            System.out.println("Sorry, cannot go back!");
-            return;
-        }
-        roomStack.push(currentRoom);
-        Room temp = currentRoom;
-        currentRoom = previousRoom;
-        previousRoom = temp;
-        System.out.println("You gone back to the previous Room.");
-        System.out.println("And now" + currentRoom.printLocationInfo() );
-     }
-     
-     private void stackBack(Command command)
-     {
-         if (command.hasSecondWord())
-        { 
-          System.out.println("sackBack what?");  
-           return;
-        }
+     // private void stackBack(Command command)
+     // {
+         // if (command.hasSecondWord())
+        // { 
+          // System.out.println("sackBack what?");  
+           // return;
+        // }
         
-        if (previousRoom == null) {
-            System.out.println("Sorry, cannot go stackback!");
-            return;
-        }
-        previousRoom = currentRoom;
-        roomStack.push(currentRoom);
-        currentRoom = roomStack.pop();
-        System.out.println("You have gone Stack back");
-        System.out.println("And now" + currentRoom.printLocationInfo() );
-     }
+        // if (previousRoom == null) {
+            // System.out.println("Sorry, cannot go stackback!");
+            // return;
+        // }
+        // previousRoom = currentRoom;
+        // roomStack.push(currentRoom);
+        // currentRoom = roomStack.pop();
+        // System.out.println("You have gone Stack back");
+        // System.out.println("And now" + currentRoom.printLocationInfo() );
+     // }
         
-     private void setRoom(Room room) 
-    {
-        previousRoom = currentRoom;
-        System.out.println("You were went back and now");
-     }
+     // private void setRoom(Room room) 
+    // {
+        // previousRoom = currentRoom;
+        // System.out.println("You were went back and now");
+     // }
     
-    private boolean goBack()
-    {
-       if (previousRoom == null) {
-            System.out.println("There is no door!");
-            return false;
-        }
-       currentRoom =  previousRoom;
-       System.out.println("You went back!");
-       System.out.println("And now" + currentRoom.printLocationInfo() );
-       //return true;
+    // private boolean goBack()
+    // {
+       // if (previousRoom == null) {
+            // System.out.println("There is no door!");
+            // return false;
+        // }
+       // currentRoom =  previousRoom;
+       // System.out.println("You went back!");
+       // System.out.println("And now" + currentRoom.printLocationInfo() );
+       // //return true;
     
-        Room nextRoom = player.getCurrentRoom().getExit(direction);
+        // Room nextRoom = player.getCurrentRoom().getExit(direction);
 
-        if (nextRoom == null) {
-            System.out.println("There is no door!");
-        }
-        else {
-            player.setCurrentRoom(nextRoom);
-            System.out.println(player.getCurrentRoom().printLocationInfo());
-        }
-    }
+        // if (nextRoom == null) {
+            // System.out.println("There is no door!");
+        // }
+        // else {
+            // player.setCurrentRoom(nextRoom);
+            // System.out.println(player.getCurrentRoom().printLocationInfo());
+        // }
+    // }
    
     
  
@@ -476,5 +496,5 @@ public class Game
             // return true;  // signal that we want to quit
         // }
     // }
-    **/
+    
 }
