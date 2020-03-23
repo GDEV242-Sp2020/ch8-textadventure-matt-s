@@ -50,7 +50,7 @@ public class Player
     /**
      * set current room player is in
      */
-    public  void  setCurrentRoom(Room room)
+    public  void setCurrentRoom(Room room)
     {
         currentRoom = room;
     }
