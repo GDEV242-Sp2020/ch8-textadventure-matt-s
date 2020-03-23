@@ -1,4 +1,4 @@
-
+import java.util.ArrayList;
 /**
  * Items class is for  are objects which can be stored on a player or in a room. 
  * They are created at the beginning of the game with a name, description,
@@ -14,6 +14,7 @@ public class Items
     private String description;
     private int weight;
     private boolean isHeld = false; //no objects start with a player
+    private ArrayList<String> otherNames; // a list to give multiple names to object
     
 
     /**
