@@ -53,19 +53,39 @@ public class Parser
             }
         }
 
-        return new Command(commands.getCommandWord(word1), word2);
+        //return new Command(commands.getCommandWord(word1), word2);
+        Command command = commands.getCommand(word1);
+        command.setSecondWord(word2);
+        return command;
     }
     
-    public String returnCommands()
+    /**
+     * return a String of all the commands.
+     * @return String command list
+     */
+    public String stringCommands()
     {
         return commands.showAllString();
     }
     
     /**
      * Print out a list of valid command words.
+     * redundancy of stringCommands()
      */
     public void showCommands()
     {
         commands.showAll();
+    }
+    
+    /**
+     * another way to return known game commands as a list
+     * This allows the Game.createCommands to add commands to this list of commands
+     * which the parser can check which object to act on.
+     * 
+     * @return CommandWords object as a list of game commands
+     */
+    public CommandWords getCommands()
+    {
+        return commands;
     }
 }

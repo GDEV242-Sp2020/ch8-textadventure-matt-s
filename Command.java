@@ -13,27 +13,28 @@
  *
  * If the command had only one word, then the second word is <null>.
  * 
- * @author  Michael Kölling and David J. Barnes
- * @version 2016.02.29
+ * @author  Matthew Sheehan, Marcelle Tamegnon
+ * @version 2020.3.22
  */
 
-public class Command
+public abstract class Command
 {
     private CommandWord commandWord;
     private String secondWord;
 
-    /**
-     * Create a command object. First and second words must be supplied, but
-     * the second may be null.
-     * @param commandWord The CommandWord. UNKNOWN if the command word
-     *                  was not recognised.
-     * @param secondWord The second word of the command. May be null.
-     */
-    public Command(CommandWord commandWord, String secondWord)
-    {
-        this.commandWord = commandWord;
-        this.secondWord = secondWord;
-    }
+    //No longer need a constructor. this class is now abstract and only frames what commands are.
+    // /**
+     // * Create a command object. First and second words must be supplied, but
+     // * the second may be null.
+     // * @param commandWord The CommandWord. UNKNOWN if the command word
+     // *                  was not recognised.
+     // * @param secondWord The second word of the command. May be null.
+     // */
+    // public Command(CommandWord commandWord, String secondWord)
+    // {
+        // this.commandWord = commandWord;
+        // this.secondWord = secondWord;
+    //}
 
     /**
      * Return the command word (the first word) of this command.
@@ -52,7 +53,16 @@ public class Command
     {
         return secondWord;
     }
-
+    
+    /**
+     * Sets the second word of the command so the child class can use the variable.
+     */
+    public void setSecondWord(String word2)
+    {
+        this.secondWord = word2;
+    }
+    
+    
     /**
      * @return true if this command was not understood.
      */
@@ -68,5 +78,7 @@ public class Command
     {
         return (secondWord != null);
     }
+    
+    abstract public void action(); //Common method to act on action - instead of actions class
 }
 
