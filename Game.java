@@ -24,6 +24,7 @@ public class Game
     private Room currentRoomG;
     private Room previousRoom;
     private Stack<Room> roomStack;
+    private int roomCounter; // player can only evade and stay away from exit for so long before game loss.
     
     public Parser parser;
     private Player player; // public so other classes can react on Player through Game
@@ -49,6 +50,7 @@ public class Game
         player = new Player(startLocation);  // start in the hallway2(number 12 in the google docs)
         parser = new Parser();
         message = new Message(player);
+        createValidCommands();
         
         
         
@@ -199,9 +201,45 @@ public class Game
         startLocation = hallway2;
 
         createItems();
-  }
+    }
     
-    
+    /**
+     * Create game commands to be held in a CommandWords object
+     * each command is added using commands.addCommand method.
+     * each command is stored as a HashMap where 
+     *          key is a String,
+     *          value is a Command object
+     * 
+     * addcommands.addCommand(param1, param2) 
+     * param1 is String, param2 is a new specific object command extended class.
+     * example: commands.addCommand("go", new GoCommand(player));
+     */
+    private void createValidCommands()
+    {
+        CommandWords commands = parser.getCommands();
+        
+        //Universal Game Commands
+        commands.addCommand("quit", new cmd_Quit()); 
+        commands.addCommand("help", new cmd_Help(commands));   
+        
+        //Basic Player Actions
+        commands.addCommand("go", new cmd_Move(player));
+        commands.addCommand("look", new cmd_Look(player));
+        commands.addCommand("unlock", new cmd_Unlock(player));
+        commands.addCommand("back", new cmd_Back(player));
+        
+        //Character Interaction
+        commands.addCommand("give", new cmd_Give(player));
+        commands.addCommand("throw", new cmd_Throw(player));
+        
+        //Item Commands
+        commands.addCommand("inventory", new cmd_Items(player));
+        commands.addCommand("take", new cmd_Take(player));
+        commands.addCommand("drop", new cmd_Drop(player));
+        
+        
+        
+    }
     
     /**
      * Create all the items and place them in their starting rooms.
@@ -242,12 +280,65 @@ public class Game
         boolean finished = false;
             while (! finished) {
                 Command command = parser.getCommand(); // gets new command
-                finished = new Actions().processCommand(command);     // runs boolean check while decripting commandWord
+                // finished = new Actions().processCommand(command);     // runs boolean check while decripting commandWord
+                finished = processCommand(command);     // runs boolean check while decripting commandWord
             }
             System.out.println("Thank you for playing.  Good bye.");
     }
+   
+    private boolean processCommand(Command command)
+    {
+        boolean wantToQuit = false;
+/**
+        CommandWord commandWord = command.getCommandWord();
 
- 
+        switch (commandWord) {
+            case UNKNOWN:
+                System.out.println("I don't know what you mean...");
+                break;
+
+            case HELP:
+                printHelp();
+                break;
+
+            case GO:
+                goRoom(command);
+                break;
+            
+            case DESCRIBE:
+            case LOOK:
+                lookAround(command);
+                break;
+
+            case QUIT:
+                wantToQuit = quit(command);
+                break;
+                
+            case TAKE:
+                takeItem(command);
+                break;
+                
+            case USE:
+                useItem(command);
+                break;
+                
+            case THROW:
+                throwItem(command);    
+            case DROP:
+                dropItem(command);
+                break;
+                
+            case INVENTORY:
+                showInventory();
+                break;
+                
+        }
+        **/
+        return wantToQuit;
+    }
+
+    
+    
     /** 
      * Try to go in one direction. If there is an exit, enter the new
      * room, otherwise print an error message.
