@@ -24,8 +24,9 @@ public class CommandWords
         validCommands = new HashMap<String, Command>(); // holds the commandWords
         /**   
          * no longer valid because unknown test is going to be elsewhere
-         * 
-        for(Command command : Command.values()) {
+ 
+        for(CommandWord command : CommandWord.values()) {
+
             if(command != CommandWord.UNKNOWN) {
                 validCommands.put(command.toString(), command);
             }
