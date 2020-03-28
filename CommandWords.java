@@ -4,6 +4,7 @@ import java.util.HashMap;
  * This class is part of the "World of Zuul" application. 
  * "World of Zuul" is a very simple, text based adventure game.
  * 
+ * A map of all the command words in the game is held here.
  *
  * @author Matthew Sheehan , Marcelle Tamegnon
  * @version 2020.03.23
@@ -22,16 +23,7 @@ public class CommandWords
     public CommandWords()
     {
         validCommands = new HashMap<String, Command>(); // holds the commandWords
-        /**   
-         * no longer valid because unknown test is going to be elsewhere
- 
-        for(CommandWord command : CommandWord.values()) {
-
-            if(command != CommandWord.UNKNOWN) {
-                validCommands.put(command.toString(), command);
-            }
-        }
-        **/
+   
     }
 
     /**

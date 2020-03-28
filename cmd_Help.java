@@ -1,7 +1,9 @@
 
 /**
- * Command Unkown represents an action which is unknown to the game 
- * and returns a message to player saying this action does nothing
+ * The help command prints information to aid the player progress through the game.
+ * This is text that may be pulled up at any time through out the game.
+ * 
+ * This class extends Command and is called when player inputs the help command
  *
  * @author Matthew Sheehan, Marcelle Tamegnon
  * @version 03/23/2020
@@ -21,22 +23,21 @@ public class cmd_Help extends Command
     
     
     /**
+     * Action for cmd_Help
+     * Prints basic text for the player to know simple boundaries of the game.
+     * Lists out commands and explains surroundings.
+     * 
      * This method performs the classes actions for Player in Game 
      * This abstract method from Command is contained in each command extension
      */
     public void action() 
-    {
-    }
-    
-    /**
-     * An example of a method - replace this comment with your own
-     *
-     * @param  y  a sample parameter for a method
-     * @return    the sum of x and y
-     */
-    public int sampleMethod(int y)
-    {
-        // put your code here
-        return y;
+    {        
+        System.out.println("You are in a hotel. The moment you put down your bags you get a mysterious");
+        System.out.println("call telling you that people are coming for you. There was no explanation");
+        System.out.println("and perhaps no time to find out. These people seem dangerous. You need to");
+        System.out.println("escape and do it quick. It seems like they are only a step behind. One wrong");
+        System.out.println("move and they might get to you.");
+        System.out.println("Your command words are:");
+        System.out.println(commands.showAllString());
     }
 }

@@ -111,8 +111,27 @@ public class Room
         return exits.get(direction);
     }
     
-    
-    
+    //Locked Room Functionality
+    /**
+     * State of room access, locked or open
+     * @param key A key to open the door. default is null. OverRidden in specialty child classes.
+     * @return unlocked 
+     * True door is open 
+     * False door is locked
+     */
+    public boolean isUnlocked(Items key)
+    {
+        return true;
+    }
+    /**
+     * Key needed to unlock this door
+     * @return Items key required to open door.
+     * null by defualt. overRidden in specialty child classes
+     */
+    public Items getKey()
+    {
+        return null; //default of no item needed to open this door.
+    }
     
     
     //Item Functionality *********************

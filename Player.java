@@ -66,7 +66,8 @@ public class Player
      */
     public void setCurrentRoom(Room room)
     {
-        currentRoom = room;
+        roomHistory.push(currentRoom); //this adds room to history log before changing currentRoom
+        currentRoom = room; //changes the currentRoom to the new room player enters
     }
     
     
@@ -88,7 +89,7 @@ public class Player
      * "Items you are holding: lamp, rock".
      * @return Lists room's items or "You are not holding any items".
      */
-    private String getItemsString()
+    public String getItemsString()
     {
         String returnString ="";
         if(Inventory.isEmpty()){

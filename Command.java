@@ -23,7 +23,9 @@ public abstract class Command
 {
     private CommandWord commandWord;
     private String secondWord;
-
+   
+    //private boolean wantQuit = false; // default false. overwritten in cmdQuit to true
+    
     //No longer need a constructor. this class is now abstract and only frames what commands are.
     // /**
      // * Create a command object. First and second words must be supplied, but
@@ -64,7 +66,6 @@ public abstract class Command
         this.secondWord = word2;
     }
     
-    
     /**
      * @return true if this command was not understood.
      */
@@ -81,6 +82,9 @@ public abstract class Command
         return (secondWord != null);
     }
     
-    abstract public void action(); //Common method to act on action - instead of actions class
+    public boolean wantToQuit(){
+        return false;
+    }
+    abstract public void action(); //abstract method unique to each command sub
 }
 

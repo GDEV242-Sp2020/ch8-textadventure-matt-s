@@ -29,10 +29,12 @@ public class Game
     public Parser parser;
     private Player player; // public so other classes can react on Player through Game
     
-    private Message message;
+    private Message message; //This message objects holds as much of the long text as possible
     private Room startLocation; //allows player to be created in constructor
     public Items flashlight, rock, map, backpack;
     public HashSet<Items> GameItems;
+    
+    boolean wantToQuit = false;
     
     //declare rooms here so they can be used game wide
     
@@ -42,38 +44,50 @@ public class Game
      */
     public Game() 
     {
-        
+        parser = new Parser();
         Stack<Room> roomStack = new Stack<Room>();
         GameItems = new HashSet<Items>();
-        createRooms();
-       
-        player = new Player(startLocation);  // start in the hallway2(number 12 in the google docs)
-        parser = new Parser();
         message = new Message(player);
+        createRooms();
+        
+        player = new Player(startLocation);  // start in the hallway2(number 12 in the google docs)
+        
+        
         createValidCommands();
         
         
         
     }
     
+    // Still working on room history
     public void pushRoomHistory(Room currentRoom)
     {
         roomStack.push(currentRoom);
     }
     
+    
     /**
-     * This method allows Game's Player object to be accessed elsewhere in package
-     */
+     * Allows Game's Player object to be accessed elsewhere in package
+     @
+    */
     public Player player()
     {
     return player;
     }
     
+    /**
+     * This method allows Game's Player's Room object to be accessed elsewhere in package
+     * @return Room Player's room object
+     */
     public Room getCurrentRoom()
     {
         return player.getCurrentRoom();
     }
     
+    /**
+     * Set Game's Player's Room object to be accessed elsewhere in package
+     * @param Room Room object used to set Player's current room
+     */
     public void setCurrentRoom(Room room)
     {
         player.setCurrentRoom(room);
@@ -91,10 +105,16 @@ public class Game
      */
     private void createRooms()
     {
-
+        /**
+         * Initialize Rooms Here.  To add a Room declare, initialize, after all init's use methods.
+         * room = new Room("Room Description string")
+         * methods:
+         * setExit("Exit", room) - "Exit": one word String Command, room: object in that direction.
+         * setDarkTRUE(); setDarkFALSE(); changes dark boolean, default is false.
+         */
         
-        // create the rooms
         outside = new Room(" outside the main entrance of the Hotel.");
+        
         lobby= new Room("currently in the" +  
                         "first room of hotel from the main entrance.");
         staffRoom = new Room("in the staff room. look carefully for"+
@@ -115,23 +135,22 @@ public class Game
         parking1 = new Room("on first floor parking");
         parking2 = new Room("on second floor parking");
        
-
         swimmingPool = new Room("in the room on the second floor that holds the swimmingpool");
         swimmingPool.setDarkTRUE();
-        
         
         elevator1 = new Room("in the elevator that goes from restaurant to hallway1");
         elevator2 = new Room("in the other elevator that goes from hallway1 to hallway3");
         restaurant = new Room(" in the hotel restaurant.");
         
         //NOTE want to create rooms that cant be accessed. 
-        
         occupiedRoom = new Room("in a hotel room that seems occupied");
         
         room1 = new Room("in first empty room on the first floor");
         room3 = new Room("in second empty room on the  first floor next to stairwell1");
         room4 = new Room("in first room on the second floor that is next to hallway3");
-
+        
+        //place all items in all the rooms
+        createItems();
         
         // initialise room exits
         outside.setExit("east", restaurant);
@@ -200,7 +219,7 @@ public class Game
 
         startLocation = hallway2;
 
-        createItems();
+        
     }
     
     /**
@@ -237,24 +256,18 @@ public class Game
         commands.addCommand("take", new cmd_Take(player));
         commands.addCommand("drop", new cmd_Drop(player));
         
-        
-        
     }
     
     /**
      * Create all the items and place them in their starting rooms.
      * Items methods: set/getName ; set/getDescription ; isHeld setBeingHeld setNotBeingHeld
-     * 
      */
     private void createItems()
     {
-        
-        
         flashlight = new Items("flashlight");
         flashlight.setDescription(message.itemDescription(flashlight));
         occupiedRoom.addItem(flashlight);
         GameItems.add(flashlight);
-        
         
         rock = new Items("Rock");
         GameItems.add(rock);
@@ -279,20 +292,38 @@ public class Game
             // execute them until the game is over.
         boolean finished = false;
             while (! finished) {
+                
                 Command command = parser.getCommand(); // gets new command
-                // finished = new Actions().processCommand(command);     // runs boolean check while decripting commandWord
+                
                 finished = processCommand(command);     // runs boolean check while decripting commandWord
             }
             System.out.println("Thank you for playing.  Good bye.");
     }
-   
+    
+    /**
+     * A check for wantToQuit status.
+     */
+    private boolean wantToQuit()
+    {
+        return wantToQuit;
+    }
+    /**
+     * Changes boolean wantToQuit to true
+     */
+    public void setQuit(){ wantToQuit = true;}
+    
+    /**
+     * executes unique action method depending on the cmd_* class called.
+     */
     private boolean processCommand(Command command)
     {
-        boolean wantToQuit = false;
-/**
-        CommandWord commandWord = command.getCommandWord();
-
-        switch (commandWord) {
+        
+        command.action();
+        return command.wantToQuit(); // Overridden in cmd_Quit so when thats launched return true
+        
+        /** 
+           **** This was the old way. Keeping only until everything works without it. ****
+         * switch (commandWord) {
             case UNKNOWN:
                 System.out.println("I don't know what you mean...");
                 break;
@@ -332,9 +363,10 @@ public class Game
                 showInventory();
                 break;
                 
-        }
+            }
+        return wantToQuit;        
         **/
-        return wantToQuit;
+
     }
 
     
@@ -369,223 +401,4 @@ public class Game
            System.out.println(player.getCurrentRoom().printLocationInfo());
         }
      }   
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-     /**
-     // * Given a command, process (that is: execute) the command.
-     // * @param command The command to be processed.
-     // * @return true If the command ends the game, false otherwise.
-     // *
-    // private boolean processCommand(Command command) 
-    // {
-        // boolean wantToQuit = false;
-
-        // CommandWord commandWord = command.getCommandWord();
-
-        // switch (commandWord) {
-            // case UNKNOWN:
-                // System.out.println("I don't know what you mean...");
-                // break;
-
-            // case HELP:
-                // printHelp();
-                // break;
-
-            // case GO:
-                // goRoom(command);
-                // break;
-                
-
- 
- this switch goes into Actions Class
-            case LOOK:
-                look(command);
-                break;
-                
-            case BACK:
-                goBack();
-                break;
-                
-            case MARK: 
-                 setRoom(currentRoom); 
-                 break;
-            //case BACK:
-            //    back(command);
-            //    break;
-                
-            case STACKBACK:
-                stackBack(command);
-                break;
-                
-
-            // case LOOK:
-                // lookAround(command);
-                // break;
-
-
-            // case QUIT:
-                // wantToQuit = quit(command);
-                // break;
-        // }
-        // return wantToQuit;
-    // }
-    // // implementations of user commands:
-
-    // /**
-     // * Print out some help information.
-     // * Here we print some stupid, cryptic message and a list of the 
-     // * command words.
-     // 
-    // private void printHelp() 
-    // {
-        // message.printHelp();
-        // parser.showCommands();
-    // }
-*/
-    
-    
-     // private void look(Command command) 
-     // {
-        // if (command.hasSecondWord())
-        // { 
-        // System.out.println("look what?");  
-        // return;
-      // }
-        // System.out.println(currentRoom.printLocationInfo());
-        // }
-     
-        // private void back(Command command) 
-     // {
-      // if (command.hasSecondWord())
-        // { 
-        // System.out.println("Back what?");  
-        // return;
-      // }
-     
-      // if (previousRoom == null) {
-            // System.out.println("Sorry, cannot go back!");
-            // return;
-        // }
-        // roomStack.push(currentRoom);
-        // Room temp = currentRoom;
-        // currentRoom = previousRoom;
-        // previousRoom = temp;
-        // System.out.println("You gone back to the previous Room.");
-        // System.out.println("And now" + currentRoom.printLocationInfo() );
-     // }
-     
-     // private void stackBack(Command command)
-     // {
-         // if (command.hasSecondWord())
-        // { 
-          // System.out.println("sackBack what?");  
-           // return;
-        // }
-        
-        // if (previousRoom == null) {
-            // System.out.println("Sorry, cannot go stackback!");
-            // return;
-        // }
-        // previousRoom = currentRoom;
-        // roomStack.push(currentRoom);
-        // currentRoom = roomStack.pop();
-        // System.out.println("You have gone Stack back");
-        // System.out.println("And now" + currentRoom.printLocationInfo() );
-     // }
-        
-     // private void setRoom(Room room) 
-    // {
-        // previousRoom = currentRoom;
-        // System.out.println("You were went back and now");
-     // }
-    
-    // private boolean goBack()
-    // {
-       // if (previousRoom == null) {
-            // System.out.println("There is no door!");
-            // return false;
-        // }
-       // currentRoom =  previousRoom;
-       // System.out.println("You went back!");
-       // System.out.println("And now" + currentRoom.printLocationInfo() );
-       // //return true;
-    
-        // Room nextRoom = player.getCurrentRoom().getExit(direction);
-
-        // if (nextRoom == null) {
-            // System.out.println("There is no door!");
-        // }
-        // else {
-            // player.setCurrentRoom(nextRoom);
-            // System.out.println(player.getCurrentRoom().printLocationInfo());
-        // }
-    // }
-   
-    
- 
-    
-
-        // // Try to leave current room.
-        // Room nextRoom = player.getCurrentRoom().getExit(direction);
-
-        // if (nextRoom == null) {
-            // System.out.println("There is no door!");
-        // }
-        // else {
-            // player.setCurrentRoom(nextRoom);
-            // System.out.println(player.getCurrentRoom().getLongDescription());
-        // }
-    // }
-   
-    
-    // /**
-     // * Player looks around and describes room.
-     // * Prints long description of current room
-     // * 
-     // * @param command given from player
-     // *
-    // private void lookAround(Command command) 
-    // {
-        // System.out.println(player.getCurrentRoom().getLongDescription());
-    // }
-
-    
-    // /** 
-     // * "Quit" was entered. Check the rest of the command to see
-     // * whether we really quit the game.
-     // * @return true, if this command quits the game, false otherwise.
-     // *
-    // private boolean quit(Command command) 
-    // {
-        // if(command.hasSecondWord()) {
-            // System.out.println("Quit what?");
-            // return false;
-        // }
-        // else {
-            // return true;  // signal that we want to quit
-        // }
-    // }
-    
-}
+    }
