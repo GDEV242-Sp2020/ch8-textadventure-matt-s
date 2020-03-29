@@ -1,7 +1,7 @@
 
 /**
- * Command Unkown represents an action which is unknown to the game 
- * and returns a message to player saying this action does nothing
+ * Drop command removes an item from the player's inventory 
+ * and adds it to items list for player's current room. The room will hold item until moved.
  *
  * @author Matthew Sheehan, Marcelle Tamegnon
  * @version 03/23/2020
@@ -9,14 +9,15 @@
 public class cmd_Drop extends Command
 {
     // instance variables - replace the example below with your own
-    private CommandWords commands;
+    private Player player;
 
     /**
-     * Constructor for objects of class CommandUnkown
+     * Constructor
+     * @param Player current player
      */
     public cmd_Drop(Player player)
     {
-        this.commands = commands;
+        this.player = player;
     }
     
     
@@ -26,17 +27,35 @@ public class cmd_Drop extends Command
      */
     public void action() 
     {
+        if (!hasSecondWord()) { // no second word
+            System.out.println("Drop what? (try: drop <item> - Item must be in your inventory)");
+            return;
+        }     
+
+        // if (item != null && player.haveItem(item)) { //item is held - redundant check
+            // player.dropItem(item);
+            // room.addItem(item);
+            
+        // }
+        // else {
+            // System.out.println("Can't find item to drop");
+        // } 
+        Room room = player.getCurrentRoom();
+        Items item = player.getItem(getSecondWord());
+        if (item != null) {
+            if (player.dropItem(item)) { //returns true and item is picked up
+                room.addItem(item);
+                System.out.println("You removed the " +item.getName() +" from your possessions.");
+                System.out.println("You now have space to hold "+ player.invSpaceLeft() +" more items.");
+            }
+            else {
+                System.out.println("You cannot drop this!");
+            }
+        }
+        else {
+            System.out.println("Drop what? (try: drop <item> - make sure its something you're carrying");
+        }        
     }
     
-    /**
-     * An example of a method - replace this comment with your own
-     *
-     * @param  y  a sample parameter for a method
-     * @return    the sum of x and y
-     */
-    public int sampleMethod(int y)
-    {
-        // put your code here
-        return y;
-    }
+
 }
