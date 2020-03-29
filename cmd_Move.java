@@ -40,17 +40,32 @@ public class cmd_Move extends Command
         Room nextRoom = player.getCurrentRoom().getExit(direction);
 
         if (nextRoom == null) {
-            System.out.println("There is no door!");
+            System.out.println("There is no door in that direction");
         }
         else {
             if (nextRoom.isUnlocked(null)) {
-                player.setCurrentRoom(nextRoom);
-                System.out.println(player.getCurrentRoom().printLocationInfo());
-                System.out.println();
+                enterRoom(nextRoom);
             }
             else {
                 System.out.println("This door is locked!");
             }
         }        
-    }        
+    }      
+    
+    /**
+     * Actions performed once player enters a room
+     * Checks to see if room isDark, if not the locationInfo is given.
+     * @param Room new room that is entered.
+     */
+    private void enterRoom(Room newRoomEntered)
+    {
+        player.setCurrentRoom(newRoomEntered);
+        if(player.getCurrentRoom().isDark()){//check to see if room is dark
+            System.out.println("The room is pitchblack and you are unable to see anything");
+            System.out.println();
+        } else {
+            System.out.println(player.getCurrentRoom().printLocationInfo());
+            System.out.println();
+        }
+    }
 }
