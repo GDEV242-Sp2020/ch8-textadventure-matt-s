@@ -8,36 +8,15 @@
  */
 public class CommandUnknown extends Command
 {
-    // instance variables - replace the example below with your own
-    private int x;
-
     /**
-     * Constructor for objects of class CommandUnkown
-     */
-    public CommandUnknown()
-    {
-        // initialise instance variables
-        x = 0;
-    }
-    
-    
-    /**
+     * Prints message saying the command entered is unknown
+     * 
      * This method performs the classes actions for Player in Game 
      * This abstract method from Command is contained in each command extension
      */
     public void action() 
     {
+        System.out.println("This is not a recognized command");
     }
     
-    /**
-     * An example of a method - replace this comment with your own
-     *
-     * @param  y  a sample parameter for a method
-     * @return    the sum of x and y
-     */
-    public int sampleMethod(int y)
-    {
-        // put your code here
-        return x + y;
-    }
 }
