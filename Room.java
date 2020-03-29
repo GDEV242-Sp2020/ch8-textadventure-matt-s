@@ -123,6 +123,7 @@ public class Room
     {
         return true;
     }
+    
     /**
      * Key needed to unlock this door
      * @return Items key required to open door.
@@ -175,9 +176,6 @@ public class Room
                 if(item.getName().equals(name))
                     return item;
             }   
-            
-            
-        System.out.println("no item of this name found here");
         return null;
     }
     
@@ -202,6 +200,7 @@ public class Room
         return returnString;
     }
     
+    // Is Dark Functionality *************
     public boolean isDark(){ //getter for isDark
         return isDark;   
     }
@@ -212,5 +211,78 @@ public class Room
     
     public void setDarkFalse(){
         isDark = false;
+    }
+    
+    
+    
+    //NPC Functionality ****************
+
+    /**
+     * Check to see if this roomItems has specific item
+     * @param  item     an Items object
+     */
+    public boolean haveNPC(Items item)
+    {
+        boolean haveItem = roomItems.contains(item);
+        return haveItem;
+    }
+    
+    /**
+     * add NPC of Items to room
+     * @param item an Items object to be added to the room.
+     */
+    public void addNPC(NPC npc)
+    {
+        npcs.add(npc);
+    }
+    
+    /**
+     * remove NPC from room's arraylist of npcs
+     * @param item an Items object to be added to the room.
+     */
+    public void removeNPC(NPC npc)
+    {
+        npcs.remove(npc);
+    }
+    
+    /**
+     * Searches room for NPC with a specific name
+     * @param name String matched to NPC object to be returned
+     * @return NPC object null if not found.
+     */
+    public NPC getNPC(String name)
+    {
+        for(NPC npc : npcs){
+                if(npc.getName().equals(name))
+                    return npc;
+            }   
+            
+            
+        System.out.println("nobody with that name is in this room");
+        return null;
+    }
+    
+    /**
+     * Return a string listing all the characters in the room
+     * "You see 1 person: a man in a hat".
+     * @return Lists room's items or "There are no items in this room".
+     */
+    private String getNPCString()
+    {
+        if (npcs.size() == 0) { //nobody here
+                return "There's no one else here besides you";
+        } else if (npcs.size() == 1) { // 1 npc here
+                String returnString = "You see 1 person: ";                
+                for(NPC chars : npcs) {
+                    returnString += " " + chars.getName();
+                }
+                return returnString;  
+        } else { // more than 1 npc here
+                String returnString = "You see "+npcs.size()+" people: ";                
+                for(NPC chars : npcs) {
+                    returnString += " " + chars.getName();
+                }
+                return returnString;  
+        }
     }
 }
