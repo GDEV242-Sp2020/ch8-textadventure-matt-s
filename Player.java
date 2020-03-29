@@ -75,6 +75,16 @@ public class Player
     
     //Item Functionality: ****************
     /**
+     * Returns room left in inventory
+     * @return int inventory space left.
+     */
+    public int invSpaceLeft()
+    {
+        
+        return itemLimit - itemsHeld;
+    }
+    
+    /**
      * Returns an item from inventory by name
      * @param name String of the item
      * @return the Items object with corresponding name
@@ -118,34 +128,49 @@ public class Player
     /**
      * take item and place into Inventory
      * @param  item     an Items object
+     * @return true if item picked up, false otherwise
      */
-    public void takeItem(Items item)
-    {
-        if(!haveItem(item) || currentRoom.haveItem(item)){
-            if(itemsHeld >= itemLimit) 
-                System.out.println("Inventory is full. Drop something first");
-            else{
+    public boolean takeItem(Items item)
+    {   
+        boolean itemTaken = false;
+        if(!haveItem(item) && currentRoom.haveItem(item)){ //if item in room not inventory
+            if(!item.canBeHeld()){ // if item can't be held
+                System.out.println ("This item can not be picked up");
+            }else if(itemsHeld >= itemLimit) { //item can be held but not enough space
+                    System.out.println("Inventory is full. Drop something first");
+            }else{ //item can be held and there is space in inventory
                 Inventory.put(item.getName(), item);
-                currentRoom.removeItem(item);
+                //currentRoom.removeItem(item);  //responsibility for this is in cmd_take
                 itemsHeld ++; //inventory tracker +1
+                itemTaken = true;
             }
         }
+        return itemTaken;
     }
     
     /**
      * Drop item and remove from Inventory. 
      *
      * @param  item     an Items object
+     * @return true if item dropped, false otherwise
      */
-    public void dropItem(Items item)
+    public boolean dropItem(Items item)
     {
-        if(haveItem(item))
-        Inventory.remove(item);
-        currentRoom.addItem(item);
-        itemsHeld --; //inventory tracker -1
+        boolean itemDropped = false;
+        if(haveItem(item) && !currentRoom.haveItem(item)){ //if item in inventory not room
+            
+                Inventory.remove(item.getName(), item);
+                //currentRoom.removeItem(item);  //responsibility for this is in cmd_take
+                itemsHeld --; //inventory tracker -1
+                itemDropped = true;
+            
+        }
+        return itemDropped;
+        //if(haveItem(item))
+        //Inventory.remove(item);
+        //itemsHeld --; //inventory tracker -1
+    
     }
-    
-    
     
     
     //BACKPACK
