@@ -1,33 +1,52 @@
 
 /**
- * Write a description of class NPC here.
+ * An NPC is a non player character the player may interact with. 
+ * Each NPC has a name, a description, and a basic bit of dialogue 
+ * NPCs behave similarly to an Items object which can not be picked up.
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Matthew Sheehan, Marcelle Tamegnon
+ * @version 03/28/2020
  */
 public class NPC
 {
-    // instance variables - replace the example below with your own
-    private int x;
+    private String name;
+    private String description;
+    private String dialogue;   //place holder for when ready to implement any dialogue
 
     /**
-     * Constructor for objects of class NPC
+     * Constructor
+     * @param String name of NPC
      */
-    public NPC()
+    public NPC(String name)
     {
-        // initialise instance variables
-        x = 0;
+        this.name = name;
     }
 
     /**
-     * An example of a method - replace this comment with your own
-     *
-     * @param  y  a sample parameter for a method
-     * @return    the sum of x and y
+     * Get NPC name
+     * @return String name of NPC
      */
-    public int sampleMethod(int y)
+    public String getName()
     {
-        // put your code here
-        return x + y;
+        return name;
     }
+    
+    /**
+     * Get NPC description
+     * @return String description of NPC
+     */
+    public String getDescription()
+    {
+        return description;
+    }
+    
+    /**
+     * Set description for NPC
+     * @param String new description given to NPC
+     */
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
+        
 }
