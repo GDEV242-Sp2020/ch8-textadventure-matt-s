@@ -266,8 +266,9 @@ public class Game
     {
         flashlight = new Items("flashlight");
         flashlight.setDescription(message.itemDescription(flashlight));
-        occupiedRoom.addItem(flashlight);
+        flashlight.setCanHoldTo(true);
         GameItems.add(flashlight);
+        occupiedRoom.addItem(flashlight);
         
         rock = new Items("Rock");
         GameItems.add(rock);
@@ -371,34 +372,34 @@ public class Game
 
     
     
-    /** 
-     * Try to go in one direction. If there is an exit, enter the new
-     * room, otherwise print an error message.
-     */
-     public void goRoom(Command command) 
-     {
-         if(!command.hasSecondWord()) {
-            // if there is no second word, we don't know where to go...
-            System.out.println("Go where?");
-            return;
-        }
+    // /** 
+     // * Try to go in one direction. If there is an exit, enter the new
+     // * room, otherwise print an error message.
+     // */
+     // public void goRoom(Command command) 
+     // {
+         // if(!command.hasSecondWord()) {
+            // // if there is no second word, we don't know where to go...
+            // System.out.println("Go where?");
+            // return;
+        // }
 
 
-        String direction = command.getSecondWord();
+        // String direction = command.getSecondWord();
 
-        // Try to leave current room.
+        // // Try to leave current room.
 
-        Room nextRoom = player.getCurrentRoom().getExit(direction);
+        // Room nextRoom = player.getCurrentRoom().getExit(direction);
         
-       if (nextRoom == null) {
-            System.out.println("There is no door!");
-        }
-        else
-        {
-           //previousRoom = currentRoom;
-           // = nextRoom;
-           player.setCurrentRoom(nextRoom);
-           System.out.println(player.getCurrentRoom().printLocationInfo());
-        }
-     }   
+       // if (nextRoom == null) {
+            // System.out.println("There is no door!");
+        // }
+        // else
+        // {
+           // //previousRoom = currentRoom;
+           // // = nextRoom;
+           // player.setCurrentRoom(nextRoom);
+           // System.out.println(player.getCurrentRoom().printLocationInfo());
+        // }
+     // }   
     }
