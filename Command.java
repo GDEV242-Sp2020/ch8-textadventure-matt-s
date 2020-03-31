@@ -21,21 +21,10 @@
 
 public abstract class Command
 {
-    private CommandWord commandWord;
+
     private String secondWord;
-    
-    
+        
     //No longer need a constructor. this class is now abstract and only frames what commands are.
-
-
-    /**
-     * Return the command word (the first word) of this command.
-     * @return The command word.
-     */
-    public CommandWord getCommandWord()
-    {
-        return commandWord;
-    }
 
     /**
      * @return The second word of this command. Returns null if there was no
@@ -54,13 +43,7 @@ public abstract class Command
         this.secondWord = word2;
     }
     
-    /**
-     * @return true if this command was not understood.
-     */
-    public boolean isUnknown()
-    {
-        return (commandWord == CommandWord.UNKNOWN);
-    }
+
 
     /**
      * @return true if the command has a second word.
