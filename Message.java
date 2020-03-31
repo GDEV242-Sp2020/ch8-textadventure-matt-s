@@ -90,7 +90,7 @@ public class Message
         System.out.println("The phone line disconnects and now are stuck wondering why their");
         System.out.println("urgency is so believable, maybe you should leave the room and ");
         System.out.println("see if anyone truly is after you.");
-        System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
+        System.out.println("Type 'help' if you need help.");
         System.out.println();
     }
     
