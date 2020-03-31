@@ -73,37 +73,4 @@ public class cmd_Talk extends Command
             return false;
         }
     }
-    
-    /**
-     * Looks in inventory for an item with name.
-     * @param String 
-     * @return boolean true if found or false if not.
-     */
-    private boolean canDescribeHeldItem(String name)
-    {
-        Items item = player.getItem(name);
-        if (item != null) {
-            System.out.println(item.getDescription());
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-    
-    /**
-     * Look at a character with the given name and show
-     * its description.
-     * @return true if the character is found or false if it's not.
-     */
-    public boolean canDescribeNPC(String name)
-    {
-        if(player.getCurrentRoom().getNPC(name) != null){
-            System.out.println(player.getCurrentRoom().getNPC(name).getDescription());
-            return true;
-        }
-        else {
-            return false;
-        }        
-    }
 }
