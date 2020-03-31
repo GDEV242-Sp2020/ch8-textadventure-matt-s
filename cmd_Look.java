@@ -32,8 +32,15 @@ public class cmd_Look extends Command
      */
     public void action() 
     {
+        if(player.getCurrentRoom().isDark()){//check to see if room is dark
+            System.out.println("The room is pitchblack and you are unable to see anything");
+            System.out.println();
+            return;   
+        }
+        
         if (!hasSecondWord()) {
             // look around the room
+            
             System.out.println(player.getCurrentRoom().printLocationInfo());
             System.out.println();                    
             return;
