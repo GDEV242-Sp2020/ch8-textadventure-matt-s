@@ -12,14 +12,17 @@ public class NPC
     private String name;
     private String description;
     private String dialogue;   //place holder for when ready to implement any dialogue
+    private boolean canTalkToPlayer;
 
     /**
      * Constructor
      * @param String name of NPC
      */
-    public NPC(String name)
+    public NPC(String name, boolean talks)
     {
         this.name = name;
+        canTalkToPlayer = talks;
+        
     }
 
     /**
@@ -30,7 +33,7 @@ public class NPC
     {
         return name;
     }
-    
+   
     /**
      * Get NPC description
      * @return String description of NPC
@@ -49,4 +52,12 @@ public class NPC
         this.description = description;
     }
         
+    /**
+     * Getter for canTalkTo Boolean
+     * @return True if NPC can talk to player
+     */ 
+    public boolean canTalkTo()
+    {
+        return canTalkToPlayer;
+    }
 }
