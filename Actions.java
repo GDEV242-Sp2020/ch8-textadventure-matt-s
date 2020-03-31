@@ -1,39 +1,4 @@
-
-// /**
- // * Write a description of class Actions here.
- // *
- // * @author Matthew Sheehan Marcelle Tamegnon
- // * @version (a version number or a date)
- // */
-// public class Actions extends Game
-// {
-    // private CommandWords commands;
-    // private Player player; 
-    // private Room currentRoom;
-    // /**
-     // * Constructor for objects of class Actions
-     // */
-    // public Actions()
-    // {
-      // // super.updateCurrentRoom();
-       // player = super.player();
-       // currentRoom = super.player().getCurrentRoom();
-       
-    // }
-
-    // /**
-     // * Update Game class to show Player's currentRoom stored
-     // * temporarily in this action
-     // *
-     // * @param  y  a sample parameter for a method
-     // * @return    the sum of x and y
-     // */
-    // // public void updateRoom()
-    // // {
-        
-        // // player.setCurrentRoom(room);
-    // // }
-    
+   
     // /**
      // * Given a command, process (that is: execute) the command.
      // * @param command The command to be processed.
@@ -273,6 +238,7 @@
     
     // //HELP
     
+
     // /**
      // * Print out some help information.
      // * Here we print some stupid, cryptic message and a list of the 
@@ -288,6 +254,7 @@
         // System.out.println("Your command words are:");
         // System.out.println(tempCommandWords);
     // }
+
     
     // //QUIT
 
