@@ -253,6 +253,7 @@ public class Game
         
         //Item Commands
         commands.addCommand("inventory", new cmd_Items(player));
+        commands.addCommand("use", new cmd_Use(player));
         commands.addCommand("take", new cmd_Take(player));
         commands.addCommand("drop", new cmd_Drop(player));
         
