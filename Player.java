@@ -62,15 +62,29 @@ public class Player
     }
     
     /**
-     * set current room player is in
+     * set current room player is in and log the room player left to roomHistory stack
      */
     public void setCurrentRoom(Room room)
     {
-        roomHistory.push(currentRoom); //this adds room to history log before changing currentRoom
+        addRoomHistory(currentRoom); //this adds room to history log before changing currentRoom
         currentRoom = room; //changes the currentRoom to the new room player enters
     }
     
+    // room history
+    public void addRoomHistory(Room currentRoom)
+    {
+        roomHistory.push(currentRoom);
+    }
     
+    /**
+     * The last room player was in
+     * @return Room the last room entered from roomStack 
+     */
+    public Room getLastRoom() // from my understanding this pops the last entry and replaces it with the one before
+    { // might need a if test to prevent a null return and say there are no rooms previous.
+        Room room = roomHistory.pop();
+        return room;
+    }
     
     
     //Item Functionality: ****************
@@ -78,7 +92,7 @@ public class Player
      * Returns room left in inventory
      * @return int inventory space left.
      */
-    public int invSpaceLeft()
+    public int numSpaceLeft()
     {
         
         return itemLimit - itemsHeld;
