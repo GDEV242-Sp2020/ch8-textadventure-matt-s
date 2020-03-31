@@ -1,10 +1,10 @@
-
+import java.util.ArrayList;
 /**
  * Items class is for  are objects which can be stored on a player or in a room. 
  * They are created at the beginning of the game with a name, description,
  * boolean is held, location, weight
  *
- * @author Matthew Sheehan
+ * @author Matthew Sheehan and Marcelle Tamegnon
  * @version 3/16/2020
  */
 public class Items
@@ -13,8 +13,10 @@ public class Items
     private String name;
     private String description;
     private int weight;
+    //extra item descriptors:
     private boolean isHeld = false; //no objects start with a player
-    
+    private ArrayList<String> otherNames; // a list to give multiple names to object
+private boolean canBeHeld = false; //can this object be picked up?
 
     /**
      * Constructor for objects of class Items
@@ -85,7 +87,27 @@ public class Items
     {
         isHeld = false;
     }
+      
+    /**
+     * Can this item be picked up?
+     * @return canBeHeld - Can this be held?
+     * True if item can be put into player's inventory.
+     * False if Items can't store with Player. Just some game objects to investigate in a room
+     */
+    public boolean canBeHeld()
+    {
+        return canBeHeld;
+    }
     
+    /**
+     * Set the item's ability to be held; True or False
+     * @param canBeHeld boolean sets Items object canBeHeld field.
+     */
+    public void setCanHoldTo(boolean canBeHeld)
+    {
+        this.canBeHeld = canBeHeld;
+        
+    }
     /**
      * An example of a method - replace this comment with your own
      *

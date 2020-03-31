@@ -8,6 +8,7 @@
 public class Message
 {
     // instance variables - replace the example below with your own
+    private Player player;
     private String flashlight;
     private String rock;
     private String map;
@@ -18,8 +19,9 @@ public class Message
      * Constructor initializes all the messages to strings which will be 
      * called in the get method. specifically descriptions
      */
-    public Message()
+    public Message(Player player)
     {
+        this.player = player;
         //ITEM STRINGS:
         flashlight  = "This flashlight is one of those heavy, powerful ones. Hopefully it has " 
                     + "enough battery life to serve its function. It's definitely heavy enough to "
@@ -31,19 +33,8 @@ public class Message
         key         = "This key is metal and shiny. Hopefully unlocks an important door";
         backpack    = "Wearing this backpack should allow me to carry a couple more items";
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+         
+
     }
     
     /**
@@ -82,6 +73,7 @@ public class Message
      */
     public void printWelcome()
     {
+        
         System.out.println();
         System.out.println("Escape from the Hotel");
         System.out.println("======================");
@@ -98,9 +90,17 @@ public class Message
         System.out.println("The phone line disconnects and now are stuck wondering why their");
         System.out.println("urgency is so believable, maybe you should leave the room and ");
         System.out.println("see if anyone truly is after you.");
-        System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
+        System.out.println("Type 'help' if you need help.");
         System.out.println();
-        System.out.println(Game.player().getCurrentRoom().printLocationInfo());
+    }
+    
+    public void setPlayer(Player player)
+    {
+        this.player = player;
+    }
+    public Player getPlayer()
+    {
+        return player;
     }
     
     /**

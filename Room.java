@@ -2,6 +2,7 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.ArrayList;
 
 /**
  * Class Room - a room in an adventure game.
@@ -21,7 +22,11 @@ public class Room
 {
     private String description;
     private HashMap<String, Room> exits;        // stores exits of this room.
-    private HashSet<Items> roomItems;   //stores the items in this room
+    private HashSet<Items> roomItems;
+    private boolean isDark;//stores the items in this room
+    private ArrayList<NPC> npcs; //Non Player Characters list
+    private Items reqKey; // required key for room
+    private boolean isLocked;
     
     /**
      * Create a room described "description". Initially, it has
@@ -29,12 +34,15 @@ public class Room
      * "an open court yard".
      * @param description The room's description.
      */
-    public Room(String description) 
+    public Room(String quickDescription) 
     {
-        this.description = description;
-        exits = new HashMap<>();
-        roomItems = new HashSet<Items>();
-        
+        this.description = quickDescription;
+        exits = new HashMap<String, Room>();
+        isDark = false;  //all rooms start with light
+        roomItems = new HashSet<Items>(); //container to track items in room.
+        npcs = new ArrayList<NPC>();
+        reqKey = null;
+        isLocked = false; 
     }
 
     /**
@@ -67,12 +75,14 @@ public class Room
         return "You are " + description + ".\n" +getItemsString() + ".\n" + getExitString();
     }
     
-    /**
+    /** 
+     *  DOES THIS METHOD GET USED? 
+     * 
      * Return a description of the room in the form:
      *     You are in the kitchen.
      *     Exits: north west
      * @return A long description of this room
-     */
+     *
     public String leaveRoom()
     {
 
@@ -107,6 +117,55 @@ public class Room
         return exits.get(direction);
     }
     
+    //Locked Room Functionality
+    /**
+     * State of room access, locked or open
+     * @param key A key to open the door. default is null. will this be overridden in specialty child classes?
+     * @return unlocked 
+     * True door is open 
+     * False door is locked
+     */
+    public boolean setUnlock(Items key)
+    {
+        if(this.reqKey.equals(key)){
+            isLocked = false;
+            return true; //if the key provided equals key set to room
+        }else{ 
+            return false; //key given doesnt open door
+        } 
+    }
+
+    /**
+     * Key needed to unlock this door
+     * @return Items key required to open door.
+     * null by defualt. overRidden in specialty child classes
+     */
+    public Items getReqKey()
+    {
+        return reqKey; //default of no item needed to open this door.
+    }
+    
+    /**
+     * assigns a new key to the room. can only have one key per room
+     * @param Items key used to unlock room.
+     */
+    public void setReqKey(Items key)
+    {
+        isLocked = true;
+        this.reqKey = key;
+    }
+    
+    /**
+     * gets isLocked state
+     * @return boolean isLocked
+     */
+    public boolean isLocked()
+    {
+        return isLocked;
+    }
+    
+    
+    
     //Item Functionality *********************
     
     /**
@@ -136,7 +195,21 @@ public class Room
     {
         roomItems.remove(item);
     }
-
+    
+    /**
+     * Searches room for item with a specific name
+     * @param name String of item to be returned
+     * @return Items object from roomItems set or null if not found.
+     */
+    public Items getItem(String name)
+    {
+        for(Items item : roomItems){
+                if(item.getName().equals(name))
+                    return item;
+            }   
+        return null;
+    }
+    
     /**
      * Return a string describing the room's items, for example
      * "Items in room: lamp, rock".
@@ -158,4 +231,89 @@ public class Room
         return returnString;
     }
     
+    // Is Dark Functionality *************
+    public boolean isDark(){ //getter for isDark
+        return isDark;   
+    }
+    
+    public void setDarkTRUE(){
+        isDark = true;
+    }
+    
+    public void setDarkFalse(){
+        isDark = false;
+    }
+    
+    
+    
+    //NPC Functionality ****************
+
+    /**
+     * Check to see if this roomItems has specific item
+     * @param  item     an Items object
+     */
+    public boolean haveNPC(Items item)
+    {
+        boolean haveItem = roomItems.contains(item);
+        return haveItem;
+    }
+    
+    /**
+     * add NPC of Items to room
+     * @param item an Items object to be added to the room.
+     */
+    public void addNPC(NPC npc)
+    {
+        npcs.add(npc);
+    }
+    
+    /**
+     * remove NPC from room's arraylist of npcs
+     * @param item an Items object to be added to the room.
+     */
+    public void removeNPC(NPC npc)
+    {
+        npcs.remove(npc);
+    }
+    
+    /**
+     * Searches room for NPC with a specific name
+     * @param name String matched to NPC object to be returned
+     * @return NPC object null if not found.
+     */
+    public NPC getNPC(String name)
+    {
+        for(NPC npc : npcs){
+                if(npc.getName().equals(name))
+                    return npc;
+            }   
+            
+            
+        System.out.println("nobody with that name is in this room");
+        return null;
+    }
+    
+    /**
+     * Return a string listing all the characters in the room
+     * "You see 1 person: a man in a hat".
+     * @return Lists room's items or "There are no items in this room".
+     */
+    private String getNPCString()
+    {
+        if (npcs.size() == 0) { //nobody here
+                return "There's no one else here besides you";
+        } else if (npcs.size() == 1) { // 1 npc here
+                String returnString = "You see 1 person: ";                
+                for(NPC chars : npcs) {
+                    returnString += " " + chars.getName();
+                }
+                return returnString;  
+        } else { // more than 1 npc here
+                String returnString = "You see "+npcs.size()+" people: ";                
+                for(NPC chars : npcs) {
+                    returnString += " " + chars.getName();
+                }
+                return returnString;  
+        }
+    }
 }
