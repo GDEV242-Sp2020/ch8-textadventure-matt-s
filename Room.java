@@ -25,6 +25,8 @@ public class Room
     private HashSet<Items> roomItems;
     private boolean isDark;//stores the items in this room
     private ArrayList<NPC> npcs; //Non Player Characters list
+    private Items reqKey; // required key for room
+    private boolean isLocked;
     
     /**
      * Create a room described "description". Initially, it has
@@ -32,13 +34,15 @@ public class Room
      * "an open court yard".
      * @param description The room's description.
      */
-    public Room(String description) 
+    public Room(String quickDescription) 
     {
-        this.description = description;
+        this.description = quickDescription;
         exits = new HashMap<String, Room>();
         isDark = false;  //all rooms start with light
         roomItems = new HashSet<Items>(); //container to track items in room.
         npcs = new ArrayList<NPC>();
+        reqKey = null;
+        isLocked = false; 
     }
 
     /**
@@ -71,12 +75,14 @@ public class Room
         return "You are " + description + ".\n" +getItemsString() + ".\n" + getExitString();
     }
     
-    /**
+    /** 
+     *  DOES THIS METHOD GET USED? 
+     * 
      * Return a description of the room in the form:
      *     You are in the kitchen.
      *     Exits: north west
      * @return A long description of this room
-     */
+     *
     public String leaveRoom()
     {
 
@@ -114,25 +120,50 @@ public class Room
     //Locked Room Functionality
     /**
      * State of room access, locked or open
-     * @param key A key to open the door. default is null. OverRidden in specialty child classes.
+     * @param key A key to open the door. default is null. will this be overridden in specialty child classes?
      * @return unlocked 
      * True door is open 
      * False door is locked
      */
-    public boolean isUnlocked(Items key)
+    public boolean setUnlock(Items key)
     {
-        return true;
+        if(this.reqKey.equals(key)){
+            isLocked = false;
+            return true; //if the key provided equals key set to room
+        }else{ 
+            return false; //key given doesnt open door
+        } 
     }
-    
+
     /**
      * Key needed to unlock this door
      * @return Items key required to open door.
      * null by defualt. overRidden in specialty child classes
      */
-    public Items getKey()
+    public Items getReqKey()
     {
-        return null; //default of no item needed to open this door.
+        return reqKey; //default of no item needed to open this door.
     }
+    
+    /**
+     * assigns a new key to the room. can only have one key per room
+     * @param Items key used to unlock room.
+     */
+    public void setReqKey(Items key)
+    {
+        isLocked = true;
+        this.reqKey = key;
+    }
+    
+    /**
+     * gets isLocked state
+     * @return boolean isLocked
+     */
+    public boolean isLocked()
+    {
+        return isLocked;
+    }
+    
     
     
     //Item Functionality *********************
