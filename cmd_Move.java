@@ -43,9 +43,13 @@ public class cmd_Move extends Command
             System.out.println("There is no door in that direction");
         }
         else {
-            if (nextRoom.isUnlocked(null)) {
+            if (!nextRoom.isLocked()) {
                 enterRoom(nextRoom);
             }
+            //unlock room should now be another action instead
+            // else if (nextRoom.isUnlocked(null)) {
+                // enterRoom(nextRoom);
+            // }
             else {
                 System.out.println("This door is locked!");
             }
@@ -59,6 +63,7 @@ public class cmd_Move extends Command
      */
     private void enterRoom(Room newRoomEntered)
     {
+        
         player.setCurrentRoom(newRoomEntered);
         if(player.getCurrentRoom().isDark()){//check to see if room is dark
             System.out.println("The room is pitchblack and you are unable to see anything");

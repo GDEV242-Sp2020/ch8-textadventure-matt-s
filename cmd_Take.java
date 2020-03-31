@@ -40,7 +40,7 @@ public class cmd_Take extends Command
             if (player.takeItem(item)) { //returns true and item is picked up
                 room.removeItem(item);
                 System.out.println("A " +item.getName() +" has been added to your inventory.");
-                System.out.println("You have space for "+ player.invSpaceLeft() +" more items.");
+                System.out.println("You have space for "+ player.numSpaceLeft() +" more items.");
             }
             else {
                 System.out.println("You cannot possibly pick this up!");

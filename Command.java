@@ -23,22 +23,10 @@ public abstract class Command
 {
     private CommandWord commandWord;
     private String secondWord;
-   
-    //private boolean wantQuit = false; // default false. overwritten in cmdQuit to true
+    
     
     //No longer need a constructor. this class is now abstract and only frames what commands are.
-    // /**
-     // * Create a command object. First and second words must be supplied, but
-     // * the second may be null.
-     // * @param commandWord The CommandWord. UNKNOWN if the command word
-     // *                  was not recognised.
-     // * @param secondWord The second word of the command. May be null.
-     // */
-    // public Command(CommandWord commandWord, String secondWord)
-    // {
-        // this.commandWord = commandWord;
-        // this.secondWord = secondWord;
-    //}
+
 
     /**
      * Return the command word (the first word) of this command.

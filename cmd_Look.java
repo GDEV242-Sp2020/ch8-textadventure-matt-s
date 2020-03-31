@@ -11,6 +11,7 @@ public class cmd_Look extends Command
     // instance variables - replace the example below with your own
     private Player player;
 
+
     /**
      * Constructor
      * @Param Player the current player
@@ -18,6 +19,8 @@ public class cmd_Look extends Command
     public cmd_Look(Player player)
     {
         this.player = player;
+        
+        
     }
     
     
@@ -28,7 +31,7 @@ public class cmd_Look extends Command
      * This abstract method from Command is contained in each command extension
      */
     public void action() 
-{
+    {
         if (!hasSecondWord()) {
             // look around the room
             System.out.println(player.getCurrentRoom().printLocationInfo());

@@ -1,13 +1,13 @@
 
 /**
- * Write a description of class create_Room here.
+ * A class where all the Game objects Rooms are created.
  *
- * @author (your name)
+ * @author Matthew Sheehan, Marcelle Tamegnon
  * @version (a version number or a date)
  */
-public class create_Rooms
+public class create_Rooms extends Game
 {
-    // instance variables - replace the example below with your own
+    
     private int x;
 
     /**
