@@ -42,22 +42,6 @@ public class cmd_Back extends Command
         }
         int stepsBack = -1;
         
-        
-        Room room = player.getCurrentRoom();
-        Items item = room.getItem(getSecondWord());
-        if (item != null) {
-            if (player.takeItem(item)) { //returns true and item is picked up
-                room.removeItem(item);
-                System.out.println("A " +item.getName() +" has been added to your inventory.");
-                System.out.println("You have space for "+ player.numSpaceLeft() +" more items.");
-            }
-            else {
-                System.out.println("You cannot possibly pick this up!");
-            }
-        }
-        else {
-            System.out.println("Take what?");
-        }                 
     }      
     
     /**
