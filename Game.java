@@ -16,31 +16,33 @@ import java.util.HashSet;
 public class Game 
 
 {
-    Room outside,staffRoom ,kitchen,hallway1,hallway2;
-    Room stairwell, parking1,parking2,roof,swimmingPool,elevator,restaurant;
-    Room stairwell2,stairwell3,occupiedRoom,lobby,hallway3,hallway4;
-    Room elevator1,elevator2, room1,room3,room4;
+    private Room outside,staffRoom ,kitchen,hallway1,hallway2;
+    private Room stairwell, parking1,parking2,roof,swimmingPool,elevator,restaurant;
+    private Room stairwell2,stairwell3,occupiedRoom,lobby,hallway3,hallway4;
+    private Room elevator1,elevator2, room1,room3,room4;
+    
     
     private Room currentRoomG;
     private Room previousRoom;
     private Stack<Room> roomStack;
     private int roomCounter; // player can only evade and stay away from exit for so long before game loss.
-    
+    private Room startLocation; //allows player to be created in constructor
+      
     public Parser parser;
     private Player player; // public so other classes can react on Player through Game
     
     private Message message; //This message objects holds as much of the long text as possible
-    private Room startLocation; //allows player to be created in constructor
+    
     public Items flashlight, rock, map, backpack;
+        
+    
     public HashSet<Items> GameItems;
     
     boolean wantToQuit = false;
     
-    //declare rooms here so they can be used game wide
-    
 
     /**
-     * Create the game and initialise its internal map.
+     * Create the game and initialise its internal map, characters and items.
      */
     public Game() 
     {
@@ -52,31 +54,31 @@ public class Game
         
         player = new Player(startLocation);  // start in the hallway2(number 12 in the google docs)
         
-        
         createValidCommands();
         
-        
-        
     }
     
-    // Still working on room history
-    public void pushRoomHistory(Room currentRoom)
-    {
-        roomStack.push(currentRoom);
+
+    /**
+     * get the message object created in Game constructor
+     * @return Message message object created at start of game.
+     */
+    public Message getMsg()
+    {       //this method actually may not have a purpose.
+        return message;
     }
-    
     
     /**
-     * Allows Game's Player object to be accessed elsewhere in package
-     @
-    */
+     * get current Player object created at start of gamedd
+     @return Player current player
+     */
     public Player player()
     {
     return player;
     }
     
     /**
-     * This method allows Game's Player's Room object to be accessed elsewhere in package
+     * gets Game's Player's Room object 
      * @return Room Player's room object
      */
     public Room getCurrentRoom()
@@ -94,10 +96,7 @@ public class Game
         //currentRoom = room;
     }
     
-    // public  void updateCurrentRoom()
-    // {
-        // currentRoom = player.getCurrentRoom();
-    // }
+
     
     /**
      * Create all the room objects and initialize all of their characteristics.
@@ -250,6 +249,7 @@ public class Game
         //Character Interaction
         commands.addCommand("give", new cmd_Give(player));
         commands.addCommand("throw", new cmd_Throw(player));
+        commands.addCommand("talk", new cmd_Talk(player)); //maybe need another param here like character.
         
         //Item Commands
         commands.addCommand("inventory", new cmd_Items(player));
@@ -261,6 +261,9 @@ public class Game
     /**
      * Create all the items and place them in their starting rooms.
      * Items methods: set/getName ; set/getDescription ; isHeld setBeingHeld setNotBeingHeld
+     * Items created are:
+     * Flashlight - goes in occupied room
+     * 
      */
     private void createItems()
     {
@@ -280,6 +283,13 @@ public class Game
         GameItems.add(backpack);
     }
     
+    /**
+     * Create all the NPCs and place them in their starting rooms.
+     */
+    private void createNPCs()
+    {
+         
+    }
     
     /**
      *  Main play routine.  Loops until end of play.
@@ -308,10 +318,14 @@ public class Game
     {
         return wantToQuit;
     }
+    
     /**
      * Changes boolean wantToQuit to true
      */
-    public void setQuit(){ wantToQuit = true;}
+    public void setQuit()
+    {
+        wantToQuit = true;
+    }
     
     /**
      * executes unique action method depending on the cmd_* class called.
@@ -321,85 +335,5 @@ public class Game
         
         command.action();
         return command.wantToQuit(); // Overridden in cmd_Quit so when thats launched return true
-        
-        /** 
-           **** This was the old way. Keeping only until everything works without it. ****
-         * switch (commandWord) {
-            case UNKNOWN:
-                System.out.println("I don't know what you mean...");
-                break;
-
-            case HELP:
-                printHelp();
-                break;
-
-            case GO:
-                goRoom(command);
-                break;
-            
-            case DESCRIBE:
-            case LOOK:
-                lookAround(command);
-                break;
-
-            case QUIT:
-                wantToQuit = quit(command);
-                break;
-                
-            case TAKE:
-                takeItem(command);
-                break;
-                
-            case USE:
-                useItem(command);
-                break;
-                
-            case THROW:
-                throwItem(command);    
-            case DROP:
-                dropItem(command);
-                break;
-                
-            case INVENTORY:
-                showInventory();
-                break;
-                
-            }
-        return wantToQuit;        
-        **/
-
     }
-
-    
-    
-    // /** 
-     // * Try to go in one direction. If there is an exit, enter the new
-     // * room, otherwise print an error message.
-     // */
-     // public void goRoom(Command command) 
-     // {
-         // if(!command.hasSecondWord()) {
-            // // if there is no second word, we don't know where to go...
-            // System.out.println("Go where?");
-            // return;
-        // }
-
-
-        // String direction = command.getSecondWord();
-
-        // // Try to leave current room.
-
-        // Room nextRoom = player.getCurrentRoom().getExit(direction);
-        
-       // if (nextRoom == null) {
-            // System.out.println("There is no door!");
-        // }
-        // else
-        // {
-           // //previousRoom = currentRoom;
-           // // = nextRoom;
-           // player.setCurrentRoom(nextRoom);
-           // System.out.println(player.getCurrentRoom().printLocationInfo());
-        // }
-     // }   
-    }
+}
