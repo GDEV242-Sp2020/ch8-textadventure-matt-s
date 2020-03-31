@@ -46,7 +46,7 @@ public class cmd_Drop extends Command
             if (player.dropItem(item)) { //returns true and item is picked up
                 room.addItem(item);
                 System.out.println("You removed the " +item.getName() +" from your possessions.");
-                System.out.println("You now have space to hold "+ player.invSpaceLeft() +" more items.");
+                System.out.println("You now have space to hold "+ player.numSpaceLeft() +" more items.");
             }
             else {
                 System.out.println("You cannot drop this!");
