@@ -94,7 +94,6 @@ public class Player
      */
     public int numSpaceLeft()
     {
-        
         return itemLimit - itemsHeld;
     }
     
