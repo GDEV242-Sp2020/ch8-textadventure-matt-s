@@ -14,7 +14,7 @@
  */
 public class cmd_Use extends Command
 {
-
+    private Items localItem;
     private Player player;
 
     /**
@@ -27,22 +27,55 @@ public class cmd_Use extends Command
     
     
     /**
+     * use item in players possession. if there is no item, then player is told
+     * 
      * This method performs the classes actions for Player in Game 
      * This abstract method from Command is contained in each command extension
      */
     public void action() 
     {
+         if (!hasSecondWord()) {
+            System.out.println("Use what? Specify an item you have.");
+            return;
+        }
+        
+        String itemToUse = getSecondWord();         // Object name to search what to use
+        if (itemExists(itemToUse)) 
+        { //search is positive
+            useItem(localItem);
+        } else {
+            System.out.println("Take what?");
+        }        
+    }
+        
+    
+    
+    /**
+     * check to see if the item exists in the room or on the Player
+     * 
+     * @param String item name of Items object
+     * @return true if item exists locally (inventory, current room) false otherwise
+     */
+    private boolean itemExists(String itemName)
+    {       
+        localItem = player.getItem(itemName); //gets item on player
+        if(localItem != null)
+        return true;
+        
+        localItem = player.getCurrentRoom().getItem(itemName); // gets item in player's current room
+        if(localItem != null)
+        return true;
+        
+        if(localItem == null)
+        return false;
     }
     
     /**
-     * An example of a method - replace this comment with your own
-     *
-     * @param  y  a sample parameter for a method
-     * @return    the sum of x and y
+     * 
      */
-    public int sampleMethod(int y)
+    private void useItem(Items item)
     {
-        // put your code here
-        return y;
+        item.use();
     }
+    
 }
