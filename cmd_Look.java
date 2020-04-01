@@ -47,15 +47,15 @@ public class cmd_Look extends Command
         }
         
         String objName = getSecondWord();         // Object name to search what to describe
-        boolean found = canDescribeItem(objName); // Can Describe this item in room?
-        if (!found) {
-            found = canDescribeHeldItem(objName); // No, then how about Inventory?
-            if (!found) {
-                found = canDescribeNPC(objName);  // No, is this a character?
+        boolean objExists = canDescribeItem(objName); // Can Describe this item in room?
+        if (!objExists) {
+            objExists = canDescribeHeldItem(objName); // No, then how about Inventory?
+            if (!objExists) {
+                objExists = canDescribeNPC(objName);  // No, is this a character?
             }
         }
         
-        if (!found) {                             // No that object name isn't found
+        if (!objExists) {                             // No that object name isn't found
             System.out.println("Look what?");
         }
     }
