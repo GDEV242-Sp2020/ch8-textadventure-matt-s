@@ -108,13 +108,18 @@ private boolean canBeHeld = false; //can this object be picked up?
         this.canBeHeld = canBeHeld;
         
     }
+    
     /**
-     * An example of a method - replace this comment with your own
+     * A use command is expanded upon in classes that extend this class.
      *
      * @param  y  a sample parameter for a method
      * @return    the sum of x and y
      */
-    
+    public void use()
+    {
+        System.out.println("Test generic use for item " +name+".");
+        System.out.println();
+    }
     
     
 }
