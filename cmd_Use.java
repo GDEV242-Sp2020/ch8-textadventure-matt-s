@@ -66,7 +66,6 @@ public class cmd_Use extends Command
         if(localItem != null)
         return true;
         
-        if(localItem == null)
         return false;
     }
     
