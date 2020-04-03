@@ -14,7 +14,14 @@ public class Message
     private String map;
     private String key;
     private String backpack;
-    
+    private String macy;
+    private String ed;
+    private String poppy;
+    private String ava;
+    private String guard1;
+    private String guard2;
+    private String guard3;
+    private String guard4;
     /**
      * Constructor initializes all the messages to strings which will be 
      * called in the get method. specifically descriptions
@@ -33,8 +40,17 @@ public class Message
         key         = "This key is metal and shiny. Hopefully unlocks an important door";
         backpack    = "Wearing this backpack should allow me to carry a couple more items";
         
-         
+        macy = "The girl in the main hallway on the first floor, just like you she's just cheched in.";
+        ed = "The  clerk in the hotel's lobby";
+        poppy = "The girl in the main hallway on the first floor, just like you she's just cheched in.";
+        ava = "The girl in the main hallway on the first floor, just like you she's just cheched in.";
+        guard1= "";
+        guard2= "";
+        guard3= "";
+        guard4= "";
+ 
 
+        
     }
     
     /**
@@ -68,6 +84,44 @@ public class Message
         
     }
     
+    public String npcDescription(NPC npc)
+    {
+        switch(npc.getName()){
+            
+            case "Macy": return macy; //returns field String init'ed in constructor
+            
+            case "Ed": return ed; 
+            
+            case "Poppy" : return poppy;
+            
+            case "Ava" : return ava;
+            
+            case "Pitt" : return guard1;
+            
+            case "FP" : return guard2;
+            
+            case "Tallboy" : return guard3;
+            
+            case "Doug" : return guard4;
+            
+            
+            
+            default: return "No non player with this name with a such description.";
+        
+        }
+        
+    }
+    
+    public void setPlayer(Player player)
+    {
+        this.player = player;
+    }
+    
+    public Player getPlayer()
+    {
+        return player;
+    }
+    
     /**
      * Print out the opening message for the player.
      */
@@ -92,16 +146,10 @@ public class Message
         System.out.println("see if anyone truly is after you.");
         System.out.println("Type 'help' if you need help.");
         System.out.println();
+       //player.getCurrentRoom();
     }
     
-    public void setPlayer(Player player)
-    {
-        this.player = player;
-    }
-    public Player getPlayer()
-    {
-        return player;
-    }
+    
     
     /**
      * Print out some help information.

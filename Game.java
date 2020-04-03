@@ -1,4 +1,4 @@
-
+  
 import java.util.*;
 
 import java.util.HashSet;
@@ -34,10 +34,10 @@ public class Game
     private Message message; //This message objects holds as much of the long text as possible
     
     public Items flashlight, rock, map, backpack;
-        
-    
     public HashSet<Items> GameItems;
-    
+    public ArrayList<NPC> nonPlayer;
+    private Random randomNpc;
+    public NPC macy,ed,poppy,ava, guard1, guard2, guard3, guard4;
     boolean wantToQuit = false;
     
 
@@ -51,7 +51,7 @@ public class Game
         GameItems = new HashSet<Items>();
         message = new Message(player);
         createRooms();
-        
+        nonPlayer = new ArrayList<>();
         player = new Player(startLocation);  // start in the hallway2(number 12 in the google docs)
         
         createValidCommands();
@@ -154,9 +154,12 @@ public class Game
         // initialise room exits
         outside.setExit("east", restaurant);
         outside.setExit("south", lobby);
-        outside.setExit("west", stairwell);
-
+        
         lobby.setExit("north",outside);
+        lobby.setExit("west", stairwell);
+        lobby.setExit("east", restaurant);
+        // lobby.setExit("south", staffRoom);
+
         
         staffRoom.setExit("north",stairwell );
         staffRoom.setExit("east",lobby);
@@ -166,18 +169,22 @@ public class Game
         hallway1.setExit("south",elevator1);
         hallway1.setExit("east", parking1);
         hallway1.setExit("west", room1);
+        hallway1.setExit("up", hallway2);
         
-        hallway2.setExit("east", stairwell2);
+        hallway2.setExit("west", stairwell2);
         hallway2.setExit("north", occupiedRoom);
         hallway2.setExit("south", room3);
+        hallway2.setExit("east", hallway1);
         
         hallway3.setExit("south",elevator2);
         hallway3.setExit("east",parking2);
         hallway3.setExit("west",room4);
+        hallway3.setExit("up", hallway4);
         
-        hallway4.setExit("east", stairwell3);
+        hallway4.setExit("west", stairwell3);
         hallway4.setExit("north", roof);
         hallway4.setExit("south", swimmingPool);
+        hallway4.setExit("east", hallway3);
         
         stairwell.setExit("west",lobby);
         stairwell.setExit("south",staffRoom);
@@ -289,10 +296,27 @@ public class Game
      */
     private void createNPCs()
     {
-         
+        macy = new NPC("Macy",true);
+        ed = new NPC("Ed",true);
+        poppy = new NPC("Poppy",true);
+        ava= new NPC("Ava",true);
+        guard1 = new NPC("Pitt",false); 
+        guard2 = new NPC("FP",false);  
+        guard3 = new NPC("Tallboy",false);  
+        guard4 = new NPC("Doug",false);  
+        
+        nonPlayer.add(macy);
+        nonPlayer.add(ed);
+        nonPlayer.add(poppy);
+        nonPlayer.add(ava);
+        nonPlayer.add(guard1);
+        nonPlayer.add(guard2);
+        nonPlayer.add(guard3);
+        nonPlayer.add(guard4);
+        lobby.addNPC(macy);
+        macy.setDescription(message.npcDescription(macy));
+        
     }
-    
-    
     
     /**
      *  Main play routine.  Loops until end of play.
@@ -305,30 +329,30 @@ public class Game
             // Enter the main command loop.  Here we repeatedly read commands and
             // execute them until the game is over.
         boolean finished = false;
-            while (! finished) {
+        while (! finished) {
                 
                 Command command = parser.getCommand(); // gets new command
                 
                 finished = processCommand(command);     // runs boolean check while decripting commandWord
-            }
-            System.out.println("Thank you for playing.  Good bye.");
-    }
+       }
+         System.out.println("Thank you for playing.  Good bye.");
+     }
     
     /**
      * A check for wantToQuit status.
      */
     private boolean wantToQuit()
     {
-        return wantToQuit;
-    }
+        return wantToQuit = true;
+     }
     
-    /**
+   /* /**
      * Changes boolean wantToQuit to true
-     */
+    
     public void setQuit()
     {
         wantToQuit = true;
-    }
+    } */
     
     /**
      * executes unique action method depending on the cmd_* class called.

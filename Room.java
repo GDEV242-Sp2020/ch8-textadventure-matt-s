@@ -298,7 +298,7 @@ public class Room
      * "You see 1 person: a man in a hat".
      * @return Lists room's items or "There are no items in this room".
      */
-    private String getNPCString()
+    public String getNPCString()
     {
         if (npcs.size() == 0) { //nobody here
                 return "There's no one else here besides you";
