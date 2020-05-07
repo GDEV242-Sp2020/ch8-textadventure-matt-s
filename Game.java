@@ -4,11 +4,17 @@ import java.util.*;
 import java.util.HashSet;
 
 /**
- *  This class is the main class of the hotel escape game. 
+ *  The game Class initializes the core game mechanics:
+ *  Hotel - The environment for the game
+ *  Parser - The Text Input
+ *  Player - The player's avatar and state control
+ *  wantToQuit
  *  
- *  This main class creates and initialises all the others: it creates all
- *  rooms, creates the parser and starts the game.  It also evaluates and
- *  executes the commands that the parser returns.
+ *  
+ //Old Description 
+ //This main class creates and initialises all the others: it creates all
+ //rooms, creates the parser and starts the game.  It also evaluates and
+ //executes the commands that the parser returns.
  * 
  * @ Matt Sheehan & Macelle Tamegnon
  * @ 2020/03/19
@@ -16,65 +22,60 @@ import java.util.HashSet;
 public class Game 
 
 {
+    
+    private Hotel hotel;
+
+    public Parser parser;
+    
+    private Player player;
+    
+    //Message idea needs work:
+    private Message message; //This message object holds as much of the long text as possible
+    
+    //Game State
+    boolean wantToQuit = false;
+    
+    /** OLD DECLARATIONS
+    //Room Declare
     private Room outside,staffRoom ,kitchen,hallway1,hallway2;
     private Room stairwell, parking1,parking2,roof,swimmingPool,elevator,restaurant;
     private Room stairwell2,stairwell3,occupiedRoom,lobby,hallway3,hallway4;
     private Room elevator1,elevator2, room1,room3,room4;
-    
-    
+    //Room Control and State
     private Room currentRoomG;
     private Room previousRoom;
     private Stack<Room> roomStack;
     private int roomCounter; // player can only evade and stay away from exit for so long before game loss.
     private Room startLocation; //allows player to be created in constructor
-      
-    public Parser parser;
-    private Player player; // public so other classes can react on Player through Game
-    
-    private Message message; //This message objects holds as much of the long text as possible
-    
+    //Item Control
     public Items flashlight, rock, map, backpack;
-        
-    
     public HashSet<Items> GameItems;
-    
-    boolean wantToQuit = false;
-    
-
+    */
+   
     /**
-     * Create the game and initialise its internal map, characters and items.
+     * Create the game mechanics.
      */
     public Game() 
     {
         parser = new Parser();
-        Stack<Room> roomStack = new Stack<Room>();
-        GameItems = new HashSet<Items>();
+        hotel = new Hotel();
+        // Stack<Room> roomStack = new Stack<Room>();
+        // GameItems = new HashSet<Items>();
         message = new Message(player);
-        createRooms();
-        
-        player = new Player(startLocation);  // start in the hallway2(number 12 in the google docs)
+        //createRooms();
+        player = new Player(hotel.getStartLocation());  // start in the hallway2(number 12 in the google docs)
         
         createValidCommands();
         
     }
     
-
     /**
-     * get the message object created in Game constructor
-     * @return Message message object created at start of game.
-     */
-    public Message getMsg()
-    {       //this method actually may not have a purpose.
-        return message;
-    }
-    
-    /**
-     * get current Player object created at start of gamedd
+     * get current Player object created at start of game
      @return Player current player
      */
     public Player player()
     {
-    return player;
+        return player;
     }
     
     /**
@@ -97,20 +98,122 @@ public class Game
     }
     
 
+   
+    /**
+     * Create game commands to be held in a CommandWords object
+     * each command is added using commands.addCommand method.
+     * each command is stored as a HashMap where 
+     *          key is a String,
+     *          value is a Command object
+     * 
+     * addcommands.addCommand(param1, param2) 
+     * param1 is String, param2 is a new specific object command extended class.
+     * example: commands.addCommand("go", new GoCommand(player));
+     */
+    private void createValidCommands()
+    {
+        CommandWords commands = parser.getCommands();
+        
+        //Universal Game Commands
+        commands.addCommand("quit", new cmd_Quit()); 
+        commands.addCommand("help", new cmd_Help(commands));   
+        
+        //Basic Player Actions
+        commands.addCommand("go", new cmd_Move(player));
+        commands.addCommand("look", new cmd_Look(player));
+        commands.addCommand("unlock", new cmd_Unlock(player));
+        commands.addCommand("back", new cmd_Back(player));
+        
+        //Character Interaction
+        commands.addCommand("give", new cmd_Give(player));
+        commands.addCommand("throw", new cmd_Throw(player));
+        commands.addCommand("talk", new cmd_Talk(player)); //maybe need another param here like character.
+        
+        //Item Commands
+        commands.addCommand("inventory", new cmd_Items(player));
+        commands.addCommand("use", new cmd_Use(player));
+        commands.addCommand("take", new cmd_Take(player));
+        commands.addCommand("drop", new cmd_Drop(player));
+        
+    }
+    
+
+    
     
     /**
-     * Create all the room objects and initialize all of their characteristics.
-     * then create and place a player in a room.
+     *  Main play routine.  Loops until end of play.
      */
-    private void createRooms()
+    public void play() 
+    {            
+    
+        message.printWelcome();
+    
+            // Enter the main command loop.  Here we repeatedly read commands and
+            // execute them until the game is over.
+        boolean finished = false;
+            while (! finished) {
+                
+                Command command = parser.getCommand(); // gets new command
+                
+                finished = processCommand(command);     // runs boolean check while decripting commandWord
+            }
+            System.out.println("Thank you for playing.  Good bye.");
+    }
+    
+    /**
+     * A check for wantToQuit status.
+     */
+    private boolean wantToQuit()
     {
+        return wantToQuit;
+    }
+    
+    /**
+     * Changes boolean wantToQuit to true
+     */
+    public void setQuit()
+    {
+        wantToQuit = true;
+    }
+    
+    /**
+     * executes unique action method depending on the cmd_* class called.
+     */
+    private boolean processCommand(Command command)
+    {
+        
+        command.action();
+        return command.wantToQuit(); // Overridden in cmd_Quit so when thats launched return true
+    }
+    
         /**
+         * no purpose
+         * get the message object created in Game constructor
+         * @return Message message object created at start of game.
+         *
+        public Message getMsg()
+        {       
+            return message;
+        }
+        */
+    
+        /**
+         * Create all the room objects and initialize all of their characteristics.
+         * then create and place a player in a room.
+         * /
+        private void createRooms()
+        {
+        }
+        */
+    
+    
+       /**
          * Initialize Rooms Here.  To add a Room declare, initialize, after all init's use methods.
          * room = new Room("Room Description string")
          * methods:
          * setExit("Exit", room) - "Exit": one word String Command, room: object in that direction.
          * setDarkTRUE(); setDarkFALSE(); changes dark boolean, default is false.
-         */
+         * /
         
         outside = new Room(" outside the main entrance of the Hotel.");
         
@@ -214,129 +317,42 @@ public class Game
         
         //currentRoom = hallway2;// start in the hallway2(number 12 in the google docs)
         //previousRoom = hallway2;
-    
-
         startLocation = hallway2;
 
-        
-    }
-    
-    /**
-     * Create game commands to be held in a CommandWords object
-     * each command is added using commands.addCommand method.
-     * each command is stored as a HashMap where 
-     *          key is a String,
-     *          value is a Command object
-     * 
-     * addcommands.addCommand(param1, param2) 
-     * param1 is String, param2 is a new specific object command extended class.
-     * example: commands.addCommand("go", new GoCommand(player));
-     */
-    private void createValidCommands()
-    {
-        CommandWords commands = parser.getCommands();
-        
-        //Universal Game Commands
-        commands.addCommand("quit", new cmd_Quit()); 
-        commands.addCommand("help", new cmd_Help(commands));   
-        
-        //Basic Player Actions
-        commands.addCommand("go", new cmd_Move(player));
-        commands.addCommand("look", new cmd_Look(player));
-        commands.addCommand("unlock", new cmd_Unlock(player));
-        commands.addCommand("back", new cmd_Back(player));
-        
-        //Character Interaction
-        commands.addCommand("give", new cmd_Give(player));
-        commands.addCommand("throw", new cmd_Throw(player));
-        commands.addCommand("talk", new cmd_Talk(player)); //maybe need another param here like character.
-        
-        //Item Commands
-        commands.addCommand("inventory", new cmd_Items(player));
-        commands.addCommand("use", new cmd_Use(player));
-        commands.addCommand("take", new cmd_Take(player));
-        commands.addCommand("drop", new cmd_Drop(player));
-        
-    }
-    
-    /**
-     * Create all the items and place them in their starting rooms.
-     * Items methods: set/getName ; set/getDescription ; isHeld setBeingHeld setNotBeingHeld
-     * Items created are:
-     * Flashlight - goes in occupied room
-     * 
-     */
-    private void createItems()
-    {
-        flashlight = new Items("flashlight");
-        flashlight.setDescription(message.itemDescription(flashlight));
-        flashlight.setCanHoldTo(true);
-        GameItems.add(flashlight);
-        occupiedRoom.addItem(flashlight);
-        
-        rock = new Items("Rock");
-        GameItems.add(rock);
-        
-        map = new Items("Map");
-        GameItems.add(map);
-        
-        backpack = new Items("BackPack");
-        GameItems.add(backpack);
-    }
-    
-    /**
-     * Create all the NPCs and place them in their starting rooms.
-     */
-    private void createNPCs()
-    {
-         
-    }
-    
-    
-    
-    /**
-     *  Main play routine.  Loops until end of play.
-     */
-    public void play() 
-    {            
-    
-        message.printWelcome();
-    
-            // Enter the main command loop.  Here we repeatedly read commands and
-            // execute them until the game is over.
-        boolean finished = false;
-            while (! finished) {
-                
-                Command command = parser.getCommand(); // gets new command
-                
-                finished = processCommand(command);     // runs boolean check while decripting commandWord
-            }
-            System.out.println("Thank you for playing.  Good bye.");
-    }
-    
-    /**
-     * A check for wantToQuit status.
-     */
-    private boolean wantToQuit()
-    {
-        return wantToQuit;
-    }
-    
-    /**
-     * Changes boolean wantToQuit to true
-     */
-    public void setQuit()
-    {
-        wantToQuit = true;
-    }
-    
-    /**
-     * executes unique action method depending on the cmd_* class called.
-     */
-    private boolean processCommand(Command command)
-    {
-        
-        command.action();
-        return command.wantToQuit(); // Overridden in cmd_Quit so when thats launched return true
-    }
+        }
+        */
+       /**
+         * Create all the items and place them in their starting rooms.
+         * Items methods: set/getName ; set/getDescription ; isHeld setBeingHeld setNotBeingHeld
+         * Items created are:
+         * Flashlight - goes in occupied room
+         * 
+         * /
+        private void createItems()
+        {
+            flashlight = new Items("flashlight");
+            flashlight.setDescription(message.itemDescription(flashlight));
+            flashlight.setCanHoldTo(true);
+            GameItems.add(flashlight);
+            hotel.occupiedRoom.addItem(flashlight);
+            
+            rock = new Items("Rock");
+            GameItems.add(rock);
+            
+            map = new Items("Map");
+            GameItems.add(map);
+            
+            backpack = new Items("BackPack");
+            GameItems.add(backpack);
+        }
+        */
+       
+        /**
+         * Create all the NPCs and place them in their starting rooms.
+         * /
+        private void createNPCs()
+        {
+             
+        }
+        */
 }

@@ -5,10 +5,6 @@ import java.util.Iterator;
 import java.util.ArrayList;
 
 /**
- * Class Room - a room in an adventure game.
- *
- * This class is part of the "World of Zuul" application. 
- * "World of Zuul" is a very simple, text based adventure game.  
  *
  * A "Room" represents one location in the scenery of the game.  It is 
  * connected to other rooms via exits.  For each existing exit, the room 
@@ -27,6 +23,7 @@ public class Room
     private ArrayList<NPC> npcs; //Non Player Characters list
     private Items reqKey; // required key for room
     private boolean isLocked;
+    private int floor = -1;
     
     /**
      * Create a room described "description". Initially, it has
@@ -54,6 +51,14 @@ public class Room
     {
         exits.put(direction, neighbor);
     }
+    
+    /**
+     * Prints room exits to console
+     */
+    public void getExits()
+    {
+        System.out.println(getExitString());
+    }
 
     /**
      * @return The short description of the room
@@ -76,7 +81,7 @@ public class Room
     }
     
     /** 
-     *  DOES THIS METHOD GET USED? 
+     *  DOES THIS METHOD [re:STRING leaveRoom()] GET USED? 
      * 
      * Return a description of the room in the form:
      *     You are in the kitchen.
@@ -154,7 +159,7 @@ public class Room
         isLocked = true;
         this.reqKey = key;
     }
-    
+
     /**
      * gets isLocked state
      * @return boolean isLocked
@@ -164,6 +169,15 @@ public class Room
         return isLocked;
     }
     
+    //Floor functionality
+    public int getFloor()
+    {
+        return floor;
+    }
+    public void setFloor(int floorNumber)
+    {
+        floor = floorNumber;
+    }
     
     
     //Item Functionality *********************
