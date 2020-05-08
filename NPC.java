@@ -60,4 +60,14 @@ public class NPC
     {
         return canTalkToPlayer;
     }
+    
+    public String getDialogue()
+    {
+        return dialogue;
+    }
+    
+    public void setDialogue(String newDialogue)
+    {
+        dialogue = newDialogue;
+    }
 }
