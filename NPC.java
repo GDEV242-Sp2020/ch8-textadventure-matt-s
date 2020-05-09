@@ -13,15 +13,15 @@ public class NPC
     private String description;
     private String dialogue;   //place holder for when ready to implement any dialogue
     private boolean canTalkToPlayer;
-
+    private boolean npcInRoom ;
     /**
      * Constructor
      * @param String name of NPC
      */
-    public NPC(String name, boolean talks)
+    public NPC(String name)
     {
         this.name = name;
-        canTalkToPlayer = talks;
+        // canTalkToPlayer = talks;
         
     }
 
@@ -29,7 +29,7 @@ public class NPC
      * Get NPC name
      * @return String name of NPC
      */
-    public String getName()
+    public String getNpcName()
     {
         return name;
     }
@@ -38,7 +38,7 @@ public class NPC
      * Get NPC description
      * @return String description of NPC
      */
-    public String getDescription()
+    public String getNpcDescription()
     {
         return description;
     }
@@ -47,7 +47,7 @@ public class NPC
      * Set description for NPC
      * @param String new description given to NPC
      */
-    public void setDescription(String description)
+    public void setNpcDescription(String description)
     {
         this.description = description;
     }
@@ -55,9 +55,30 @@ public class NPC
     /**
      * Getter for canTalkTo Boolean
      * @return True if NPC can talk to player
-     */ 
+     */
     public boolean canTalkTo()
     {
         return canTalkToPlayer;
+    }
+    
+    /**
+     *Is there anyone in this room?
+     * @return 
+     * True if there is at least one otherperson.
+     * False if there is only player
+     */
+    public boolean npcInRoom()
+    {
+        return npcInRoom;
+    }
+    
+    /**
+     * Set the player's ability to talk to non player character; True or False
+     * @param boolean npcInRoom 
+     */
+    public void setNpcIsInRoom(boolean npcInRoom)
+    {
+        this.npcInRoom = npcInRoom;
+        
     }
 }

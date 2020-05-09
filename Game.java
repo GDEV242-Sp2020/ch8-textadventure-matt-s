@@ -35,7 +35,7 @@ public class Game
     
     public Items flashlight, rock, map, backpack;
     public HashSet<Items> GameItems;
-    public ArrayList<NPC> nonPlayer;
+    public ArrayList<NPC> npcs;
     private Random randomNpc;
     public NPC macy,ed,poppy,ava, guard1, guard2, guard3, guard4;
     boolean wantToQuit = false;
@@ -48,10 +48,10 @@ public class Game
     {
         parser = new Parser();
         Stack<Room> roomStack = new Stack<Room>();
-        GameItems = new HashSet<Items>();
+        GameItems = new HashSet<>();
         message = new Message(player);
         createRooms();
-        nonPlayer = new ArrayList<>();
+        npcs = new ArrayList<NPC>();
         player = new Player(startLocation);  // start in the hallway2(number 12 in the google docs)
         
         createValidCommands();
@@ -202,14 +202,19 @@ public class Game
         roof.setExit("south", hallway4);
         
         parking1.setExit("west", hallway1);
+        parking1.setExit("down",outside);
         
         parking2.setExit("west", hallway3);
+        parking2.setExit("down", parking1);
         
         elevator1.setExit("south", restaurant);
         elevator1.setExit("north", hallway1);
         
         elevator2.setExit("south", hallway1);
         elevator2.setExit("north", hallway3);
+        restaurant.setExit("south",kitchen);
+        restaurant.setExit("North",outside);
+        restaurant.setExit("west",lobby);
         
         occupiedRoom.setExit("south", hallway2);
         
@@ -282,13 +287,22 @@ public class Game
         occupiedRoom.addItem(flashlight);
         
         rock = new Items("Rock");
+        rock.setDescription(message.itemDescription(rock));
+        rock.setCanHoldTo(true);
         GameItems.add(rock);
+        roof.addItem(rock);
         
         map = new Items("Map");
+        map.setDescription(message.itemDescription(map));
+        map.setCanHoldTo(true);
         GameItems.add(map);
+        elevator1.addItem(map);
         
         backpack = new Items("BackPack");
+        backpack.setDescription(message.itemDescription(backpack));
+        backpack.setCanHoldTo(true);
         GameItems.add(backpack);
+        staffRoom.addItem(backpack);
     }
     
     /**
@@ -296,25 +310,33 @@ public class Game
      */
     private void createNPCs()
     {
-        macy = new NPC("Macy",true);
-        ed = new NPC("Ed",true);
-        poppy = new NPC("Poppy",true);
-        ava= new NPC("Ava",true);
-        guard1 = new NPC("Pitt",false); 
-        guard2 = new NPC("FP",false);  
-        guard3 = new NPC("Tallboy",false);  
-        guard4 = new NPC("Doug",false);  
-        
-        nonPlayer.add(macy);
-        nonPlayer.add(ed);
-        nonPlayer.add(poppy);
-        nonPlayer.add(ava);
-        nonPlayer.add(guard1);
-        nonPlayer.add(guard2);
-        nonPlayer.add(guard3);
-        nonPlayer.add(guard4);
+        macy = new NPC("Macy");
+        macy.setNpcDescription(message.npcDescription(macy));
+        macy.setNpcIsInRoom(true);
+        npcs.add(macy);
         lobby.addNPC(macy);
-        macy.setDescription(message.npcDescription(macy));
+        
+        ed = new NPC("Ed");
+        lobby.addNPC(ed);
+        ed.setNpcIsInRoom(true);
+        ed.setNpcDescription(message.npcDescription(ed));
+        
+        poppy = new NPC("Poppy");
+        ava= new NPC("Ava");
+        guard1 = new NPC("Pitt"); 
+        guard2 = new NPC("FP");  
+        guard3 = new NPC("Tallboy");  
+        guard4 = new NPC("Doug");  
+        
+        
+        npcs.add(ed);
+        npcs.add(poppy);
+        npcs.add(ava);
+        npcs.add(guard1);
+        npcs.add(guard2);
+        npcs.add(guard3);
+        npcs.add(guard4);
+        
         
     }
     
@@ -346,13 +368,13 @@ public class Game
         return wantToQuit = true;
      }
     
-   /* /**
+    /**
      * Changes boolean wantToQuit to true
-    
-    public void setQuit()
+    */
+    private void setQuit()
     {
         wantToQuit = true;
-    } */
+    } 
     
     /**
      * executes unique action method depending on the cmd_* class called.

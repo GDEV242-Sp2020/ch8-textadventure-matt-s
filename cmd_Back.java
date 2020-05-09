@@ -38,6 +38,7 @@ public class cmd_Back extends Command
            
             player.setCurrentRoom(player.getLastRoom());
             System.out.println("You have moved back to previous room.");
+            System.out.println(player.getCurrentRoom().printLocationInfo());
             return;
         }
         int stepsBack = -1;

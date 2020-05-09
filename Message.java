@@ -40,8 +40,8 @@ public class Message
         key         = "This key is metal and shiny. Hopefully unlocks an important door";
         backpack    = "Wearing this backpack should allow me to carry a couple more items";
         
-        macy = "The girl in the main hallway on the first floor, just like you she's just cheched in.";
-        ed = "The  clerk in the hotel's lobby";
+        macy = "The girl in the lobby who just entered the hotel and about to cheched in.";
+        ed = "The man with the hat sitting in lobby reading the newspaper";
         poppy = "The girl in the main hallway on the first floor, just like you she's just cheched in.";
         ava = "The girl in the main hallway on the first floor, just like you she's just cheched in.";
         guard1= "";
@@ -86,7 +86,7 @@ public class Message
     
     public String npcDescription(NPC npc)
     {
-        switch(npc.getName()){
+        switch(npc.getNpcName()){
             
             case "Macy": return macy; //returns field String init'ed in constructor
             

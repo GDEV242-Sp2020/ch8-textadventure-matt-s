@@ -252,10 +252,10 @@ public class Room
      * Check to see if this roomItems has specific item
      * @param  item     an Items object
      */
-    public boolean haveNPC(Items item)
+    public boolean haveNPC(NPC npc)
     {
-        boolean haveItem = roomItems.contains(item);
-        return haveItem;
+        boolean haveNpc = npcs.contains(npc);
+        return haveNpc;
     }
     
     /**
@@ -284,7 +284,7 @@ public class Room
     public NPC getNPC(String name)
     {
         for(NPC npc : npcs){
-                if(npc.getName().equals(name))
+                if(npc.getNpcName().equals(name))
                     return npc;
             }   
             
@@ -300,20 +300,21 @@ public class Room
      */
     public String getNPCString()
     {
-        if (npcs.size() == 0) { //nobody here
+      if (npcs.size() == 0) { //nobody here
                 return "There's no one else here besides you";
-        } else if (npcs.size() == 1) { // 1 npc here
+                
+      } else if (npcs.size() == 1) { // 1 npc here
                 String returnString = "You see 1 person: ";                
                 for(NPC chars : npcs) {
-                    returnString += " " + chars.getName();
+                    returnString += " " + chars.getNpcName();
                 }
                 return returnString;  
-        } else { // more than 1 npc here
+      } else { // more than 1 npc here
                 String returnString = "You see "+npcs.size()+" people: ";                
                 for(NPC chars : npcs) {
-                    returnString += " " + chars.getName();
+                    returnString += " " + chars.getNpcName();
                 }
                 return returnString;  
-        }
+                   }
     }
 }

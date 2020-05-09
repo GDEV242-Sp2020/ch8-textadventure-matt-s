@@ -102,7 +102,7 @@ public class cmd_Look extends Command
     public boolean canDescribeNPC(String name)
     {
         if(player.getCurrentRoom().getNPC(name) != null){
-            System.out.println(player.getCurrentRoom().getNPC(name).getDescription());
+            System.out.println(player.getCurrentRoom().getNPC(name).getNpcDescription());
             return true;
         }
         else {
