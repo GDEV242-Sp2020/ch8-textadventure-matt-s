@@ -61,7 +61,7 @@ public class NPC
         return canTalkToPlayer;
     }
     
-<<<<<<< HEAD
+
     /**
      *Is there anyone in this room?
      * @return 
@@ -80,8 +80,8 @@ public class NPC
     public void setNpcIsInRoom(boolean npcInRoom)
     {
         this.npcInRoom = npcInRoom;
-        
-=======
+    }
+    
     public String getDialogue()
     {
         return dialogue;
@@ -90,6 +90,6 @@ public class NPC
     public void setDialogue(String newDialogue)
     {
         dialogue = newDialogue;
->>>>>>> 664ec42a306e960158d54c44bd9b71cb1ed62d7a
+
     }
 }

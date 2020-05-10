@@ -65,7 +65,7 @@ public class cmd_Talk extends Command
      if (hasSecondWord()){
         if (index == 0 || index == 1|| index == 2||index == 3){
          currentRoom.getNPCString();
-         System.out.println("You asked "+ npcs[0]+ " Where is the bagpack?\n In the kitchen. Hurry" + npcs[index] + "replied");
+         System.out.println("You asked "+ npcs[index]+ " Where is the bagpack?\n In the kitchen. Hurry" + npcs[index] + "replied");
          System.out.println("Thanks,you replied.");
          System.out.println("Well done you have found an ally and received an important piece of information.");
         }
@@ -75,7 +75,7 @@ public class cmd_Talk extends Command
        
        System.out.println("You tried to get information from a guard, now you're dead. Next time," +
          " be more carefull to who you talk to.");
-       wantToQuit();
+      wantToQuit();
      }
     }
     
