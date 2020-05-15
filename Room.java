@@ -10,6 +10,11 @@ import java.util.ArrayList;
  * connected to other rooms via exits.  For each existing exit, the room 
  * stores a reference to the neighboring room.
  * 
+ * A room has an int floor number and String description.
+ * A room contains NPCs and Items in it.
+ * A room have a Dark state where a player needs to use a flashlight item to see
+ * A room can be locked and require a key to get into. 
+ * 
  * @author  Matthew Sheehan
  * @version 3/17/2020
  */
