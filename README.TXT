@@ -55,15 +55,15 @@ Elvtr. = Elevator (multi floor choice transit)
 General Hallway B Floor Plan (where # is floor number):
 ------------------------------------------------------	
                           (North)
-        .D......D.......___________
-      (Northwest)                 |        (NorthEast)
-             Hallway A            D  Cleaning Closet 	
-        .D......D.......|         |
-      (West)            |         |             (East)
-                rm.#03  D         D  rm.#02  
-                        |         |
-                rm.#01  D         D  Utility Room
-      (SouthWest)       |__     __|        (SouthEast)
+         .D......D......._________
+      (Northwest)                |        (NorthEast)
+              Hallway A          D  Cleaning Closet 	
+         .D......D.......|       |
+      (West)             |       |             (East)
+                rm.#03   D       D  rm.#02  
+                         |       |
+                rm.#01   D       D  Utility Room
+      (SouthWest)        |__   __|        (SouthEast)
                          XXXXXXXXX
                          X Stair X
                          X -well X
